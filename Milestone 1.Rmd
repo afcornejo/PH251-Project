@@ -1,0 +1,26 @@
+---
+title: "Milestone 1"
+author: "Adrian C & Victor Guillera"
+date: "9/24/2021"
+output: pdf_document
+---
+
+Project Selection:
+
+Scenario 2- COVID-19 Vaccination Updates in CA
+
+Meeting Planning:
+
+We will have weekly to biweekly in-person meetings for our project depending on
+the workload.
+The group will meet on Tuesdays and/or Thursdays, where we will track progress.
+Communication will be via Facebook and text and our meetings will be casual at
+first, but will quickly transition to a business-only atmosphere.
+
+Rules and Responsibilities:
+
+Adrian Cornejo will submit Milestone work and Victor Guillera will be the point 
+of contact between the group and the faculty for the course.
+
+The best date to meet with a course facilitator will be:
+Thursday, Sept. 30, 2021 during the time period 1-3pm.
