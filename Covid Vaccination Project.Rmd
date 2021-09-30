@@ -4,10 +4,25 @@ author: "Adrian Cornejo and Victor Guillera"
 date: "9/30/2021"
 output: pdf_document
 ---
+This data set will relate to our question if being a homeowner impacts vaccination rates per CA county. While not a perfect representation of SES of cases, this data set will help us elucidate if there is a trend via linear regression between the homeowner to renter rate as well as the vaccination rate per county.
+
+
 ```{r}
 library(readr)
 countydem <- read.csv("ca_county_demographics.csv")
-covidvax- read.csv("cov_vax_admin.csv")
+covidvax <- read.csv("cov_vax_admin.csv")
+```
+
+```{r}
+str(covidvax)
+head(covidvax)
+tail(covidvax)
+```
+The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible.
 
 
+```{r}
+str(countydem)
+head(countydem)
+tail(covidvax)
 ```
