@@ -4,10 +4,21 @@ author: "Adrian Cornejo and Victor Guillera"
 date: "9/30/2021"
 output: pdf_document
 ---
+
+Description of Dataset: 
+  1. What is the data source?
+    We have two datasets, one is of COVID-19 vaccination progress throughout CA provided by the CDPH following vaccine doseage by zip code from 1/5/21 to about present 9/14/21, and the other is demographic info in CA across all counties. The code chunk below provides the range of dates for the vaccine progress dataset.  
+  2. How does the dataset relate to the group problem statement and question?
+
+```{r}
+library(dplyr)
+distinct(covidvax, as_of_date, .keep_all = F)
+```
+
 ```{r}
 library(readr)
 countydem <- read.csv("ca_county_demographics.csv")
-covidvax- read.csv("cov_vax_admin.csv")
-
+covidvax <- read.csv("cov_vax_admin.csv")
 
 ```
+
