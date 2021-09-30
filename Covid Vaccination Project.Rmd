@@ -1,0 +1,13 @@
+---
+title: "COVID Vaccination Project"
+author: "Adrian Cornejo and Victor Guillera"
+date: "9/30/2021"
+output: pdf_document
+---
+```{r}
+library(readr)
+countydem <- read.csv("ca_county_demographics.csv")
+covidvax- read.csv("cov_vax_admin.csv")
+
+
+```
