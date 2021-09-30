@@ -12,7 +12,7 @@ library(readr)
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
 ```
-
+To import the csv files, we used read.csv from the readr package and will inspect our imported files first before we clean our data set.
 ```{r}
 str(covidvax)
 head(covidvax)
@@ -26,3 +26,4 @@ str(countydem)
 head(countydem)
 tail(covidvax)
 ```
+The structure of "countydem" reveals a data frame containing 23 columns and 58 rows with integer, character and number data types.
