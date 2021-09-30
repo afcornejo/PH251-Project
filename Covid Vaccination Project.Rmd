@@ -4,26 +4,63 @@ author: "Adrian Cornejo and Victor Guillera"
 date: "9/30/2021"
 output: pdf_document
 ---
-This data set will relate to our question if being a homeowner impacts vaccination rates per CA county. While not a perfect representation of SES of cases, this data set will help us elucidate if there is a trend via linear regression between the homeowner to renter rate as well as the vaccination rate per county.
 
+Section 1 
+
+This data set will relate to our question if being a homeowner impacts 
+vaccination rates per CA county. While not a perfect representation of 
+SES of cases, this data set will help us elucidate if there is a trend 
+via linear regression between the homeowner to renter rate as well as the 
+vaccination rate per county.
+
+We have two datasets, one is of COVID-19 vaccination progress throughout 
+CA provided by the CDPH following vaccine doseage by zip code from 1/5/21 
+to about present 9/14/21, and the other is demographic info in CA across 
+all counties. The code chunk below provides the range of dates for the vaccine 
+progress dataset.
+
+```{r}
+distinct(covidvax, as_of_date, .keep_all = F)
+
+```
 
 ```{r}
 library(readr)
+library(tibble)
+library(dplyr)
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
 ```
-To import the csv files, we used read.csv from the readr package and will inspect our imported files first before we clean our data set.
+To import the csv files, we used read.csv from the readr package and will 
+inspect our imported files first before we clean our data set.
+Libraries we loaded in were readr, dplyr, and tibble. We are going to pull variables "persons_fully_vaccinated", "persons_partially_vaccinated", "age12_plus_population", and "county" from the covidvax csv file. We will pull "name", "renter_occ","owner_occ", and "vacant" variables.
 ```{r}
 str(covidvax)
 head(covidvax)
 tail(covidvax)
+view(covidvax)
 ```
+
 The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible.
 
 
 ```{r}
 str(countydem)
 head(countydem)
-tail(covidvax)
+tail(countydem)
+view(countydem)
 ```
 The structure of "countydem" reveals a data frame containing 23 columns and 58 rows with integer, character and number data types.
+
+
+
+```{r}
+covidvax2 <- select(covidvax, "county","as_of_date", "age12_plus_population", "persons_fully_vaccinated", "persons_partially_vaccinated")
+
+
+view(covidvax2)
+
+countydem2 <- select(countydem, "name", "renter_occ","owner_occ", "vacant")
+
+view(countydem2)
+```
