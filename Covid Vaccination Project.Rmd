@@ -19,10 +19,6 @@ to about present 9/14/21, and the other is demographic info in CA across
 all counties. The code chunk below provides the range of dates for the vaccine 
 progress dataset.
 
-```{r}
-distinct(covidvax, as_of_date, .keep_all = F)
-
-```
 
 ```{r}
 library(readr)
@@ -38,10 +34,10 @@ Libraries we loaded in were readr, dplyr, and tibble. We are going to pull varia
 str(covidvax)
 head(covidvax)
 tail(covidvax)
-view(covidvax)
+distinct(covidvax, as_of_date, .keep_all = F)
 ```
 
-The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible.
+The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible. There are also a total of 27 unique dates, each 7 weeks apart (weekly results).
 
 
 ```{r}
@@ -49,18 +45,26 @@ str(countydem)
 head(countydem)
 tail(countydem)
 view(countydem)
+
 ```
 The structure of "countydem" reveals a data frame containing 23 columns and 58 rows with integer, character and number data types.
 
 
 
-```{r}
-covidvax2 <- select(covidvax, "county","as_of_date", "age12_plus_population", "persons_fully_vaccinated", "persons_partially_vaccinated")
+```{r} 
+#Cleaning the data by removing unnecessary columns, rearranging the data, and removing "N/A" data points.
 
+covidvax2 <- select(covidvax, "county","zip_code_tabulation_area", "as_of_date", "age12_plus_population", "persons_fully_vaccinated", "persons_partially_vaccinated")
 
-view(covidvax2)
 
 countydem2 <- select(countydem, "name", "renter_occ","owner_occ", "vacant")
 
-view(countydem2)
+
+names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12", "fully_vaccinated", "partially vaccinated")
+
+
+names(countydem2) <-c("county_name","renters","owners","vacant_housing")
+
+
+
 ```
