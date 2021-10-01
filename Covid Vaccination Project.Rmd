@@ -7,64 +7,85 @@ output: pdf_document
 
 Section 1 
 
-This data set will relate to our question if being a homeowner impacts 
-vaccination rates per CA county. While not a perfect representation of 
-SES of cases, this data set will help us elucidate if there is a trend 
-via linear regression between the homeowner to renter rate as well as the 
-vaccination rate per county.
+This data set will relate to our question if being a homeowner status and 
+available housing impacts vaccination rates per CA county. While not a perfect 
+representation of SES of cases, this data set will help us elucidate if there is
+a trend via linear regression between the homeowner-related to renter rates and
+the vaccination rate per county.
 
-We have two datasets, one is of COVID-19 vaccination progress throughout 
-CA provided by the CDPH following vaccine doseage by zip code from 1/5/21 
+We have two data sets, one is of COVID-19 vaccination progress throughout 
+CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 
 to about present 9/14/21, and the other is demographic info in CA across 
-all counties. The code chunk below provides the range of dates for the vaccine 
-progress dataset.
+all counties. Below, we read in our libraries, data sets, explore our data sets, 
+and then proceed to clean the data sets.
+
 
 
 ```{r}
 library(readr)
+library(knitr)
 library(tibble)
 library(dplyr)
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
 ```
-To import the csv files, we used read.csv from the readr package and will 
+
+To import the csv files, we used read_csv from base R and will 
 inspect our imported files first before we clean our data set.
-Libraries we loaded in were readr, dplyr, and tibble. We are going to pull variables "persons_fully_vaccinated", "persons_partially_vaccinated", "age12_plus_population", and "county" from the covidvax csv file. We will pull "name", "renter_occ","owner_occ", and "vacant" variables.
-```{r}
+Libraries we loaded in were readr, dplyr, and tibble. We are going to pull 
+variables "persons_fully_vaccinated", "persons_partially_vaccinated", 
+"zip_code_tabulation_area", "age12_plus_population", and "county" from the
+covidvax csv file. We will pull "name", "renter_occ","owner_occ", "hse_units" 
+and "vacant" variables.
+```{r, eval=F}
 str(covidvax)
 head(covidvax)
-tail(covidvax)
+nrow(covidvax)
+ncol(covidvax)
+typeof(covidvax)
+class(covidvax)
 distinct(covidvax, as_of_date, .keep_all = F)
 ```
 
-The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible. There are also a total of 27 unique dates, each 7 weeks apart (weekly results).
+The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible. There are also a total of 27 unique dates, each 7 weeks apart (weekly results). 
 
 
-```{r}
+```{r, eval=F}
 str(countydem)
 head(countydem)
-tail(countydem)
-view(countydem)
-
+nrow(countydem)
+ncol(countydem)
+typeof(countydem)
+class(countydem)
 ```
-The structure of "countydem" reveals a data frame containing 23 columns and 58 rows with integer, character and number data types.
+The structure of "countydem" reveals a data frame containing 
+23 columns and 58 rows with integer, character and number data types.
 
 
 
 ```{r} 
-#Cleaning the data by removing unnecessary columns, rearranging the data, and removing "N/A" data points.
+#Cleaning the data by removing unnecessary columns, rearranging the data,
+#and removing "N/A" data points.
 
-covidvax2 <- select(covidvax, "county","zip_code_tabulation_area", "as_of_date", "age12_plus_population", "persons_fully_vaccinated", "persons_partially_vaccinated")
+#COVID Vaccination Rates
+covidvax2 <- select(covidvax, "county","zip_code_tabulation_area", "as_of_date",
+                    "age12_plus_population", "persons_fully_vaccinated",
+                    "persons_partially_vaccinated")
 
-
-countydem2 <- select(countydem, "name", "renter_occ","owner_occ", "vacant")
-
-
-names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12", "fully_vaccinated", "partially vaccinated")
-
-
-names(countydem2) <-c("county_name","renters","owners","vacant_housing")
+names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12", 
+                      "fully_vaccinated", "partially vaccinated")
 
 
+covidvax2[is.na(covidvax2)] <- 0
+
+#County Data 
+
+countydem2 <- select(countydem, "name", "renter_occ","owner_occ", 
+                     "vacant", "hse_units")
+
+names(countydem2) <-c("county_name","renters","owners",
+                      "vacant_housing", "total_housing_units")
+
+countydem2[is.na(countydem2)] <- 0
 
 ```
