@@ -5,20 +5,121 @@ date: "9/30/2021"
 output: pdf_document
 ---
 
-Description of Dataset: 
-  1. What is the data source?
-    We have two datasets, one is of COVID-19 vaccination progress throughout CA provided by the CDPH following vaccine doseage by zip code from 1/5/21 to about present 9/14/21, and the other is demographic info in CA across all counties. The code chunk below provides the range of dates for the vaccine progress dataset.  
-  2. How does the dataset relate to the group problem statement and question?
+<<<<<<< HEAD
 
-```{r}
-library(dplyr)
-distinct(covidvax, as_of_date, .keep_all = F)
-```
+Section 1 
+
+This data set will relate to our question if being a homeowner status and 
+available housing impacts vaccination rates per CA county. While not a perfect 
+representation of SES of cases, this data set will help us elucidate if there is
+a trend via linear regression between the homeowner-related to renter rates and
+the vaccination rate per county.
+
+We have two data sets, one is of COVID-19 vaccination progress throughout 
+CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 
+to about present 9/14/21, and the other is demographic info in CA across 
+all counties. Below, we read in our libraries, data sets, explore our data sets, 
+and then proceed to clean the data sets.
+
+
+>>>>>>> d85a832b2103c3d4b79de4bc4dc2c54d17b15372
 
 ```{r}
 library(readr)
+library(knitr)
+library(tibble)
+library(dplyr)
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
+<<<<<<< HEAD
 
 ```
 
+=======
+```
+
+To import the csv files, we used read_csv from base R and will 
+inspect our imported files first before we clean our data set.
+Libraries we loaded in were readr, dplyr, and tibble. We are going to pull 
+variables "persons_fully_vaccinated", "persons_partially_vaccinated", 
+"zip_code_tabulation_area", "age12_plus_population", and "county" from the
+covidvax csv file. We will pull "name", "renter_occ","owner_occ", "hse_units" 
+and "vacant" variables.
+```{r, eval=F}
+str(covidvax)
+head(covidvax)
+nrow(covidvax)
+ncol(covidvax)
+typeof(covidvax)
+class(covidvax)
+distinct(covidvax, as_of_date, .keep_all = F)
+```
+
+The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible. There are also a total of 27 unique dates, each 7 weeks apart (weekly results). 
+
+
+```{r, eval=F}
+str(countydem)
+head(countydem)
+nrow(countydem)
+ncol(countydem)
+typeof(countydem)
+class(countydem)
+```
+The structure of "countydem" reveals a data frame containing 
+23 columns and 58 rows with integer, character and number data types.
+
+
+
+```{r} 
+#Cleaning the data by removing unnecessary columns, rearranging the data,
+#and removing "N/A" data points.
+
+#COVID Vaccination Rates
+covidvax2 <- select(covidvax, "county","zip_code_tabulation_area", "as_of_date",
+                    "age12_plus_population", "persons_fully_vaccinated",
+                    "persons_partially_vaccinated")
+
+names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12", 
+                      "fully_vaccinated", "partially_vaccinated")
+
+
+covidvax2[is.na(covidvax2)] <- 0
+
+#Using the function str() we see that the selected varibales in covidvax2 are chr, int, chr, num, num 
+#We may need to convert the dates to numeric using the as.numeric() function to determine and compare vaccination rate. All other column types should be fine as is. 
+#Converting NA cells to 0 we allow ourselves to manipulate and describe entire numeric columns
+
+#Descriptions
+distinct(covidvax2, county, .keep_all = F)
+distinct(covidvax2, date, .keep_all = F)
+distinct(covidvax2, zip_code, .keep_all = F)
+
+covidvax2 %>% group_by(zip_code) %>% summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
+
+covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
+
+#County Data 
+
+countydem2 <- select(countydem, "name", "renter_occ","owner_occ", 
+                     "vacant", "hse_units")
+
+names(countydem2) <-c("county_name","renters","owners",
+                      "vacant_housing", "total_housing_units")
+
+countydem2[is.na(countydem2)] <- 0
+
+#Using the function str() we see that the selected varibales in countydem2 are chr, int, int, int, int 
+#All column types should be fine as is for our study question
+#Converting NA cells to 0 we allow ourselves to manipulate and describe entire numeric columns
+#Changed column names to easier/obvious verbiage
+
+#Descriptions
+
+distinct(countydem2, county_name, .keep_all = F)
+
+countydem2 %>% summarise(renters_mean = mean(renters), owners_mean = mean(owners), vacant_mean = mean(vacant_housing), total_mean = mean(total_housing_units))
+
+countydem2 %>% summarise(renters_range = range(renters), owners_range = range(owners), vacant_range = range(vacant_housing), total_range = range(total_housing_units))
+```
+>>>>>>> d85a832b2103c3d4b79de4bc4dc2c54d17b15372
