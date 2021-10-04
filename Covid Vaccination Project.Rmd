@@ -16,7 +16,8 @@ the vaccination rate per county.
 We have two data sets, one is of COVID-19 vaccination progress throughout 
 CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 
 to about present 9/14/21, and the other is demographic info in CA across 
-all counties. Below, we read in our libraries, data sets, explore our data sets, 
+all counties from the US census data for 2014 to 2019.
+Below, we read in our libraries, data sets, explore our data sets, 
 and then proceed to clean the data sets.
 
 
@@ -44,6 +45,9 @@ nrow(covidvax)
 ncol(covidvax)
 typeof(covidvax)
 class(covidvax)
+```
+
+```{r, eval=F}
 distinct(covidvax, as_of_date, .keep_all = F)
 ```
 
@@ -99,9 +103,10 @@ manipulate and describe entire numeric columns. We also changed column names to
 allow for easier/obvious verbiage.
 
 
-```{r}
+```{r, eval=F}
 
 #Descriptions
+
 distinct(covidvax2, county, .keep_all = F)
 distinct(covidvax2, date, .keep_all = F)
 distinct(covidvax2, zip_code, .keep_all = F)
@@ -114,7 +119,7 @@ covidvax2 %>% group_by(zip_code) %>%
   summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
 
 ``` 
-Population Range and Median for covid vaccinations for those over 12 years old.
+Population Range and Median for COVID vaccinations for those over 12 years old.
 ```{r}
 covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
                         total_pop_median = median(total_pop_over_12))
@@ -127,7 +132,7 @@ fivenum(covidvax2$partially_vaccinated)
 ```
 
 
-```{r}
+```{r, eval=F}
 
 
 #Descriptions
@@ -136,6 +141,9 @@ fivenum(covidvax2$partially_vaccinated)
 
 distinct(countydem2, county_name, .keep_all = F)
 
+``` 
+
+```{r}
 countydem2 %>%
   summarise(renters_mean = mean(renters), 
             owners_mean = mean(owners), 
@@ -148,8 +156,9 @@ countydem2 %>%
                          vacant_range = range(vacant_housing), 
                          total_range = range(total_housing_units))
 
-#Below, we get the five number summary for data of interest in countydem2.
-
+```
+Below, we get the five number summary for data of interest in countydem2.
+```{r}
 fivenum(countydem2$renters)
 fivenum(countydem2$owners)
 fivenum(countydem2$vacant_housing)
@@ -157,4 +166,3 @@ fivenum(countydem2$total_housing_units)
 
 ```
 
-```
