@@ -114,13 +114,12 @@ covidvax2 %>% group_by(zip_code) %>%
   summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
 
 ``` 
-#Population Range and Median for covid vaccinations for those over 12 years old.
+Population Range and Median for covid vaccinations for those over 12 years old.
 ```{r}
 covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
                         total_pop_median = median(total_pop_over_12))
 
-#Below, we see the minimum, first quartile, median, third quartile, and max 
-values
+#Below, is the minimum, first quartile, median, third quartile, and max values.
 
 fivenum(covidvax2$total_pop_over_12)
 fivenum(covidvax2$fully_vaccinated)
