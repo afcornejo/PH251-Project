@@ -47,7 +47,10 @@ class(covidvax)
 distinct(covidvax, as_of_date, .keep_all = F)
 ```
 
-The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible. There are also a total of 27 unique dates, each 7 weeks apart (weekly results). 
+The structure of the "cov_vax_admin" file is a data frame with 11 columns and 
+65,268 rows. The data frame contains integer, number, and character data types 
+and contains a redacted column that is inaccessible. There are also a total of 
+27 unique dates, each 7 weeks apart (weekly results). 
 
 
 ```{r, eval=F}
@@ -73,7 +76,7 @@ covidvax2 <- select(covidvax, "county","zip_code_tabulation_area", "as_of_date",
                     "persons_partially_vaccinated")
 
 names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12", 
-                      "fully_vaccinated", "partially vaccinated")
+                      "fully_vaccinated", "partially_vaccinated")
 
 
 covidvax2[is.na(covidvax2)] <- 0
@@ -87,5 +90,72 @@ names(countydem2) <-c("county_name","renters","owners",
                       "vacant_housing", "total_housing_units")
 
 countydem2[is.na(countydem2)] <- 0
+```
+
+Using the function str() we see that the selected varibales in 
+countydem2 are chr, int, int, int, int. All column types should be fine as is 
+for our study question. Converting NA cells to 0 we allow ourselves to 
+manipulate and describe entire numeric columns. We also changed column names to 
+allow for easier/obvious verbiage.
+
+
+```{r}
+
+#Descriptions
+distinct(covidvax2, county, .keep_all = F)
+distinct(covidvax2, date, .keep_all = F)
+distinct(covidvax2, zip_code, .keep_all = F)
+
+```
+
+```{r}
+
+covidvax2 %>% group_by(zip_code) %>% 
+  summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
+
+``` 
+#Population Range and Median for covid vaccinations for those over 12 years old.
+```{r}
+covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
+                        total_pop_median = median(total_pop_over_12))
+
+#Below, we see the minimum, first quartile, median, third quartile, and max 
+values
+
+fivenum(covidvax2$total_pop_over_12)
+fivenum(covidvax2$fully_vaccinated)
+fivenum(covidvax2$partially_vaccinated)
+```
+
+
+```{r}
+
+
+#Descriptions
+
+#We get the mean & range for all numeric and integer vectors in countydem2 below
+
+distinct(countydem2, county_name, .keep_all = F)
+
+countydem2 %>%
+  summarise(renters_mean = mean(renters), 
+            owners_mean = mean(owners), 
+            vacant_mean = mean(vacant_housing), 
+            total_mean = mean(total_housing_units))
+
+countydem2 %>% 
+  summarise(renters_range = range(renters), 
+                         owners_range = range(owners), 
+                         vacant_range = range(vacant_housing), 
+                         total_range = range(total_housing_units))
+
+#Below, we get the five number summary for data of interest in countydem2.
+
+fivenum(countydem2$renters)
+fivenum(countydem2$owners)
+fivenum(countydem2$vacant_housing)
+fivenum(countydem2$total_housing_units)
+
+```
 
 ```
