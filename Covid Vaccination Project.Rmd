@@ -123,3 +123,5 @@ countydem2 %>% summarise(renters_mean = mean(renters), owners_mean = mean(owners
 countydem2 %>% summarise(renters_range = range(renters), owners_range = range(owners), vacant_range = range(vacant_housing), total_range = range(total_housing_units))
 ```
 >>>>>>> d85a832b2103c3d4b79de4bc4dc2c54d17b15372
+
+test 
