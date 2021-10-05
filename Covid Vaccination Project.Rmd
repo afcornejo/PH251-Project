@@ -5,7 +5,6 @@ date: "9/30/2021"
 output: pdf_document
 ---
 
-<<<<<<< HEAD
 
 Section 1 
 
@@ -18,11 +17,11 @@ the vaccination rate per county.
 We have two data sets, one is of COVID-19 vaccination progress throughout 
 CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 
 to about present 9/14/21, and the other is demographic info in CA across 
-all counties. Below, we read in our libraries, data sets, explore our data sets, 
+all counties from the US census data for 2014 to 2019.
+Below, we read in our libraries, data sets, explore our data sets, 
 and then proceed to clean the data sets.
 
 
->>>>>>> d85a832b2103c3d4b79de4bc4dc2c54d17b15372
 
 ```{r}
 library(readr)
@@ -31,12 +30,9 @@ library(tibble)
 library(dplyr)
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
-<<<<<<< HEAD
 
 ```
 
-=======
-```
 
 To import the csv files, we used read_csv from base R and will 
 inspect our imported files first before we clean our data set.
@@ -52,10 +48,16 @@ nrow(covidvax)
 ncol(covidvax)
 typeof(covidvax)
 class(covidvax)
+```
+
+```{r, eval=F}
 distinct(covidvax, as_of_date, .keep_all = F)
 ```
 
-The structure of the "cov_vax_admin" file is a data frame with 11 columns and 65,268 rows. The data frame contains integer, number, and character data types and contains a redacted column that is inaccessible. There are also a total of 27 unique dates, each 7 weeks apart (weekly results). 
+The structure of the "cov_vax_admin" file is a data frame with 11 columns and 
+65,268 rows. The data frame contains integer, number, and character data types 
+and contains a redacted column that is inaccessible. There are also a total of 
+27 unique dates, each 7 weeks apart (weekly results). 
 
 
 ```{r, eval=F}
@@ -108,6 +110,35 @@ names(countydem2) <-c("county_name","renters","owners",
                       "vacant_housing", "total_housing_units")
 
 countydem2[is.na(countydem2)] <- 0
+```
+
+Using the function str() we see that the selected varibales in 
+countydem2 are chr, int, int, int, int. All column types should be fine as is 
+for our study question. Converting NA cells to 0 we allow ourselves to 
+manipulate and describe entire numeric columns. We also changed column names to 
+allow for easier/obvious verbiage.
+
+
+```{r, eval=F}
+
+#Descriptions
+
+distinct(covidvax2, county, .keep_all = F)
+distinct(covidvax2, date, .keep_all = F)
+distinct(covidvax2, zip_code, .keep_all = F)
+
+```
+
+```{r}
+
+covidvax2 %>% group_by(zip_code) %>% 
+  summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
+
+``` 
+Population Range and Median for COVID vaccinations for those over 12 years old.
+```{r}
+covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
+                        total_pop_median = median(total_pop_over_12))
 
 #Using the function str() we see that the selected varibales in countydem2 are chr, int, int, int, int 
 #All column types should be fine as is for our study question
@@ -122,4 +153,47 @@ countydem2 %>% summarise(renters_mean = mean(renters), owners_mean = mean(owners
 
 countydem2 %>% summarise(renters_range = range(renters), owners_range = range(owners), vacant_range = range(vacant_housing), total_range = range(total_housing_units))
 ```
->>>>>>> d85a832b2103c3d4b79de4bc4dc2c54d17b15372
+
+#Below, is the minimum, first quartile, median, third quartile, and max values.
+
+```{r}
+fivenum(covidvax2$total_pop_over_12)
+fivenum(covidvax2$fully_vaccinated)
+fivenum(covidvax2$partially_vaccinated)
+```
+
+
+```{r, eval=F}
+
+
+#Descriptions
+
+#We get the mean & range for all numeric and integer vectors in countydem2 below
+
+distinct(countydem2, county_name, .keep_all = F)
+
+``` 
+
+```{r}
+countydem2 %>%
+  summarise(renters_mean = mean(renters), 
+            owners_mean = mean(owners), 
+            vacant_mean = mean(vacant_housing), 
+            total_mean = mean(total_housing_units))
+
+countydem2 %>% 
+  summarise(renters_range = range(renters), 
+                         owners_range = range(owners), 
+                         vacant_range = range(vacant_housing), 
+                         total_range = range(total_housing_units))
+
+```
+Below, we get the five number summary for data of interest in countydem2.
+```{r}
+fivenum(countydem2$renters)
+fivenum(countydem2$owners)
+fivenum(countydem2$vacant_housing)
+fivenum(countydem2$total_housing_units)
+
+```
+
