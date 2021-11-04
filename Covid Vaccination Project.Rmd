@@ -28,6 +28,7 @@ library(readr)
 library(knitr)
 library(tibble)
 library(dplyr)
+library(stringr)
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
 
@@ -196,4 +197,69 @@ fivenum(countydem2$vacant_housing)
 fivenum(countydem2$total_housing_units)
 
 ```
+Milestone 3 
 
+```{r}
+
+#Covid Vaccination by County data manipulation (covidvax files)
+unique(covidvax2$county)
+
+covidvax2 <- covidvax2 %>% filter(county!="0")
+
+unique(covidvax2$date)
+```
+```{r}
+
+covidvax3 <- covidvax2 %>% 
+  mutate(month = case_when(
+    str_detect(date, "-01-") == T ~ "January",
+    str_detect(date, "-02-") == T ~ "February",
+    str_detect(date, "-03-") == T ~ "March",
+    str_detect(date, "-04-") == T ~ "April",
+    str_detect(date, "-05-") == T ~ "May",
+    str_detect(date, "-06-") == T ~ "June",
+    str_detect(date, "-07-") == T ~ "July",
+    str_detect(date, "-08-") == T ~ "August",
+    str_detect(date, "-09-") == T ~ "September"
+  ))
+
+unique(covidvax3$month)
+
+```
+`
+```{r}
+
+covidvax4 <- covidvax3 %>% 
+  group_by(county,month)%>%
+  mutate(county_total_pop_over12 = sum(total_pop_over_12)) %>%
+  mutate(county_fully_vaccinated = sum(fully_vaccinated)) %>%
+  mutate(county_partially_vaccinated = sum(partially_vaccinated))
+  
+
+covidvax4 <- covidvax4 %>%
+  select(-"zip_code",-"total_pop_over_12",-"fully_vaccinated",
+         -"partially_vaccinated")
+
+```
+
+```{r}
+
+#Removing duplicate columns after combining the zip codes for each county
+#and making column totals for each . Then we check to ensure we have 58 counties
+#for each month.
+
+covidvax5 <- covidvax4 %>% distinct(county,month, .keep_all=T)
+
+covidvax5 %>% group_by(month) %>% summarise(n())
+```
+```{r}
+covidvax5 <- covidvax5 %>%
+mutate(county_percent_fullvax =
+(county_fully_vaccinated)/(county_total_pop_over12)) %>%
+mutate(county_percent_partialvax =
+(county_partially_vaccinated)/(county_total_pop_over12))
+
+summary(covidvax5$county_percent_fullvax)
+summary(covidvax5$county_percent_partialvax)
+
+```
