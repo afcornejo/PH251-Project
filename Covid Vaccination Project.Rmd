@@ -5,6 +5,7 @@ date: "9/30/2021"
 output: pdf_document
 ---
 
+# Milestone 2
 
 Section 1 
 
@@ -197,8 +198,6 @@ fivenum(countydem2$vacant_housing)
 fivenum(countydem2$total_housing_units)
 
 ```
-Milestone 3 
-
 ```{r}
 
 #Covid Vaccination by County data manipulation (covidvax files)
@@ -262,4 +261,12 @@ mutate(county_percent_partialvax =
 summary(covidvax5$county_percent_fullvax)
 summary(covidvax5$county_percent_partialvax)
 
+```
+County Demographic Data Editing
+```{r}
+countydem3 <- countydem2 %>%
+  mutate(total_in_use_housing = total_housing_units - vacant_housing) %>%
+  mutate(renter_housing_ratio = (total_housing_units - vacant_housing)/renters) %>%
+  mutate(owner_housing_ratio = (total_housing_units - vacant_housing)/owners) %>%
+  mutate(renter_owner_ratio = renters/owners)
 ```
