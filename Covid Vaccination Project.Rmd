@@ -1,11 +1,11 @@
 ---
 title: "COVID Vaccination Project"
 author: "Adrian Cornejo and Victor Guillera"
-date: "9/30/2021"
+date: "11/4/2021"
 output: pdf_document
 ---
 
-# Milestone 2
+#Milestone 2
 
 Section 1 
 
@@ -73,9 +73,9 @@ class(countydem)
 The structure of "countydem" reveals a data frame containing 
 23 columns and 58 rows with integer, character and number data types.
 
+\newpage
 
-
-```{r} 
+```{r, eval=F} 
 #Cleaning the data by removing unnecessary columns, rearranging the data,
 #and removing "N/A" data points.
 
@@ -90,18 +90,24 @@ names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12",
 
 covidvax2[is.na(covidvax2)] <- 0
 
-#Using the function str() we see that the selected varibales in covidvax2 are chr, int, chr, num, num 
-#We may need to convert the dates to numeric using the as.numeric() function to determine and compare vaccination rate. All other column types should be fine as is. 
-#Converting NA cells to 0 we allow ourselves to manipulate and describe entire numeric columns
+#Using the function str() we see that the selected varibales in covidvax2 
+#are chr, int, chr, num, num 
+#We may need to convert the dates to numeric using the as.numeric() function 
+#to determine and compare vaccination rate. All other column types should be 
+#fine as is. 
+#Converting NA cells to 0 we allow ourselves to manipulate and describe entire 
+#numeric columns.
 
 #Descriptions
 distinct(covidvax2, county, .keep_all = F)
 distinct(covidvax2, date, .keep_all = F)
 distinct(covidvax2, zip_code, .keep_all = F)
 
-covidvax2 %>% group_by(zip_code) %>% summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
+covidvax2 %>% group_by(zip_code) %>%
+  summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
 
-covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
+covidvax2 %>% 
+  summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
 
 #County Data 
 
@@ -120,6 +126,7 @@ for our study question. Converting NA cells to 0 we allow ourselves to
 manipulate and describe entire numeric columns. We also changed column names to 
 allow for easier/obvious verbiage.
 
+\newpage
 
 ```{r, eval=F}
 
@@ -131,29 +138,35 @@ distinct(covidvax2, zip_code, .keep_all = F)
 
 ```
 
-```{r}
+```{r, eval=F}
 
 covidvax2 %>% group_by(zip_code) %>% 
   summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
 
 ``` 
 Population Range and Median for COVID vaccinations for those over 12 years old.
-```{r}
+```{r, eval=F}
 covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
                         total_pop_median = median(total_pop_over_12))
 
-#Using the function str() we see that the selected varibales in countydem2 are chr, int, int, int, int 
+#Using the function str() we see that the selected variables 
+#in countydem2 are chr, int, int, int, int 
 #All column types should be fine as is for our study question
-#Converting NA cells to 0 we allow ourselves to manipulate and describe entire numeric columns
+#Converting NA cells to 0 we allow ourselves to manipulate and describe 
+#entire numeric columns.
 #Changed column names to easier/obvious verbiage
-
+```
 #Descriptions
-
+```{r}
 distinct(countydem2, county_name, .keep_all = F)
 
-countydem2 %>% summarise(renters_mean = mean(renters), owners_mean = mean(owners), vacant_mean = mean(vacant_housing), total_mean = mean(total_housing_units))
+countydem2 %>% summarise(renters_mean = mean(renters),
+                         owners_mean = mean(owners), 
+                         vacant_mean = mean(vacant_housing), total_mean = mean(total_housing_units))
 
-countydem2 %>% summarise(renters_range = range(renters), owners_range = range(owners), vacant_range = range(vacant_housing), total_range = range(total_housing_units))
+countydem2 %>% summarise(renters_range = range(renters), 
+                         owners_range = range(owners), 
+                         vacant_range = range(vacant_housing), total_range = range(total_housing_units))
 ```
 
 #Below, is the minimum, first quartile, median, third quartile, and max values.
@@ -198,9 +211,12 @@ fivenum(countydem2$vacant_housing)
 fivenum(countydem2$total_housing_units)
 
 ```
+##Milestone 3
+
 ```{r}
 
 #Covid Vaccination by County data manipulation (covidvax files)
+
 unique(covidvax2$county)
 
 covidvax2 <- covidvax2 %>% filter(county!="0")
@@ -258,15 +274,123 @@ mutate(county_percent_fullvax =
 mutate(county_percent_partialvax =
 (county_partially_vaccinated)/(county_total_pop_over12))
 
+#Checking that our percentages make sense.
 summary(covidvax5$county_percent_fullvax)
 summary(covidvax5$county_percent_partialvax)
 
 ```
 County Demographic Data Editing
 ```{r}
+
 countydem3 <- countydem2 %>%
   mutate(total_in_use_housing = total_housing_units - vacant_housing) %>%
-  mutate(renter_housing_ratio = (total_housing_units - vacant_housing)/renters) %>%
-  mutate(owner_housing_ratio = (total_housing_units - vacant_housing)/owners) %>%
+  mutate(renter_housing_prop = (renters/(total_in_use_housing))) %>%
+  mutate(owner_housing_prop = (owners/(total_in_use_housing))) %>%
   mutate(renter_owner_ratio = renters/owners)
 ```
+\newpage
+
+#Data Dictionary
+
+```{r, eval=F}
+
+str(countydem3)
+str(covidvax5)
+
+```
+
+#County Demographics Data Set
+
+Name: county_name
+Data type: character
+Description: A list of all 58 counties in California.
+
+Name:renters
+Data type: integer
+Description: Number of renters in each county in California.
+
+Name:owners
+Data type: integer
+Description: Number of owners in each county in California.
+
+Name:vacant_housing
+Data type: integer
+Description: Number of empty homes in each county in California.
+
+Name:total_housing_units
+Data type: integer
+Description: Number of total homes in each county in California.
+
+Name:total_in_use_housing
+Data type: integer
+Description: Number of total homes currently in use in each county in 
+California.
+
+Name:renter_housing_prop
+Data type: number
+Description: Proportion of renters living in occupied homes in 
+each county in California.
+
+Name:owner_housing_prop
+Data type: number
+Description: Proportion of home owners living in occupied homes in 
+each county in California.
+
+Name:renter_owner_ratio
+Data type: number
+Description: Renter to Home owner ratio for 
+each county in California.
+
+\newpage
+
+#Covid Vaccination Rate Data Set
+
+Name:county
+Data type: character
+Description: A list containing the 58 counties in California.
+
+Name:date
+Data type: character
+Description:The dates when the data was compiled, ranging from January 5, 2021 to
+September 14, 2021.
+
+Name:month
+Data type: character
+Description: The month in which the testing took place. Created to more easily
+combine data from specific dates into monthly variables for each county 
+in the future.
+
+Name:county_total_pop_over12
+Data type: number
+Description: Total population over the age of 12 years old in 
+each county in California for a specific month.
+
+Name:county_fully_vaccinated
+Data type: number
+Description: Total number of people fully vaccinated over the age of 12 in 
+each county in California for a specific month.
+
+Name:county_fully_vaccinated
+Data type: number
+Description: Total number of people fully vaccinated over the age of 12 in 
+each county in California for a specific month.
+
+Name:county_partially_vaccinated
+Data type: number
+Description: Total number of people partially vaccinated over the age of 12 in 
+each county in California for a specific month.
+
+Name:county_percent_fullvax
+Data type: number
+Description: Percentage of people fully vaccinated over the age of 12 over the
+total population over 12 years old in each county in California for a specific
+month.
+
+Name:county_percent_partialvax
+Data type: number
+Description: Percentage of people partially vaccinated over the age of 12 over the
+total population over 12 years old in each county in California for a specific
+month.
+
+
+\newpage
