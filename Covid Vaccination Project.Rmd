@@ -22,8 +22,6 @@ all counties from the US census data for 2014 to 2019.
 Below, we read in our libraries, data sets, explore our data sets, 
 and then proceed to clean the data sets.
 
-
-
 ```{r}
 library(readr)
 library(knitr)
@@ -34,7 +32,6 @@ countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
 
 ```
-
 
 To import the csv files, we used read_csv from base R and will 
 inspect our imported files first before we clean our data set.
@@ -61,7 +58,6 @@ The structure of the "cov_vax_admin" file is a data frame with 11 columns and
 and contains a redacted column that is inaccessible. There are also a total of 
 27 unique dates, each 7 weeks apart (weekly results). 
 
-
 ```{r, eval=F}
 str(countydem)
 head(countydem)
@@ -72,8 +68,6 @@ class(countydem)
 ```
 The structure of "countydem" reveals a data frame containing 
 23 columns and 58 rows with integer, character and number data types.
-
-
 
 ```{r} 
 #Cleaning the data by removing unnecessary columns, rearranging the data,
@@ -120,7 +114,6 @@ for our study question. Converting NA cells to 0 we allow ourselves to
 manipulate and describe entire numeric columns. We also changed column names to 
 allow for easier/obvious verbiage.
 
-
 ```{r, eval=F}
 
 #Descriptions
@@ -164,16 +157,13 @@ fivenum(covidvax2$fully_vaccinated)
 fivenum(covidvax2$partially_vaccinated)
 ```
 
-
 ```{r, eval=F}
-
 
 #Descriptions
 
 #We get the mean & range for all numeric and integer vectors in countydem2 below
 
 distinct(countydem2, county_name, .keep_all = F)
-
 ``` 
 
 ```{r}
@@ -198,6 +188,9 @@ fivenum(countydem2$vacant_housing)
 fivenum(countydem2$total_housing_units)
 
 ```
+\newpage 
+
+# Milestone 3 
 ```{r}
 
 #Covid Vaccination by County data manipulation (covidvax files)
@@ -260,7 +253,6 @@ mutate(county_percent_partialvax =
 
 summary(covidvax5$county_percent_fullvax)
 summary(covidvax5$county_percent_partialvax)
-
 ```
 County Demographic Data Editing
 ```{r}
@@ -269,4 +261,142 @@ countydem3 <- countydem2 %>%
   mutate(renter_housing_ratio = (total_housing_units - vacant_housing)/renters) %>%
   mutate(owner_housing_ratio = (total_housing_units - vacant_housing)/owners) %>%
   mutate(renter_owner_ratio = renters/owners)
+```
+
+\newpage
+
+#Data Dictionary
+
+```{r, eval=F}
+
+str(countydem3)
+str(covidvax5)
+
+```
+
+#County Demographics Data Set
+
+Name: county_name
+Data type: character
+Description: A list of all 58 counties in California.
+
+Name:renters
+Data type: integer
+Description: Number of renters in each county in California.
+
+Name:owners
+Data type: integer
+Description: Number of owners in each county in California.
+
+Name:vacant_housing
+Data type: integer
+Description: Number of empty homes in each county in California.
+
+Name:total_housing_units
+Data type: integer
+Description: Number of total homes in each county in California.
+
+Name:total_in_use_housing
+Data type: integer
+Description: Number of total homes currently in use in each county in 
+California.
+
+Name:renter_housing_prop
+Data type: number
+Description: Proportion of renters living in occupied homes in 
+each county in California.
+
+Name:owner_housing_prop
+Data type: number
+Description: Proportion of home owners living in occupied homes in 
+each county in California.
+
+Name:renter_owner_ratio
+Data type: number
+Description: Renter to Home owner ratio for 
+each county in California.
+
+\newpage
+
+#Covid Vaccination Rate Data Set
+
+Name:county
+Data type: character
+Description: A list containing the 58 counties in California.
+
+Name:date
+Data type: character
+Description:The dates when the data was compiled, ranging from January 5, 2021 to
+September 14, 2021.
+
+Name:month
+Data type: character
+Description: The month in which the testing took place. Created to more easily
+combine data from specific dates into monthly variables for each county 
+in the future.
+
+Name:county_total_pop_over12
+Data type: number
+Description: Total population over the age of 12 years old in 
+each county in California for a specific month.
+
+Name:county_fully_vaccinated
+Data type: number
+Description: Total number of people fully vaccinated over the age of 12 in 
+each county in California for a specific month.
+
+Name:county_fully_vaccinated
+Data type: number
+Description: Total number of people fully vaccinated over the age of 12 in 
+each county in California for a specific month.
+
+Name:county_partially_vaccinated
+Data type: number
+Description: Total number of people partially vaccinated over the age of 12 in 
+each county in California for a specific month.
+
+Name:county_percent_fullvax
+Data type: number
+Description: Percentage of people fully vaccinated over the age of 12 over the
+total population over 12 years old in each county in California for a specific
+month.
+
+Name:county_percent_partialvax
+Data type: number
+Description: Percentage of people partially vaccinated over the age of 12 over the
+total population over 12 years old in each county in California for a specific
+month.
+
+\newpage
+
+#Descriptive Statistics Tables
+```{r}
+countydem4 <- countydem3 %>%
+  summarise(total_in_use_housing_range = summary(total_in_use_housing),
+            renter_housing_ratio_range = summary(renter_housing_ratio),
+            owner_housing_ratio_range = summary(owner_housing_ratio),
+            renter_owner_ratio_range = summary(renter_owner_ratio)) 
+
+rownames(countydem4) <- c("Min", "1st Quartile", "Median", "Mean", "3rd Quartile", "Max")
+
+countydem5 <- countydem3 %>%
+  summarise(total_renters = sum(renters),
+            total_owners = sum(owners))
+
+rownames(countydem5) <- c("Total Count")
+```
+
+```{r}
+library(kableExtra)
+
+countydem_kable <- kable(countydem4,longtable=T,booktabs=T, 
+                         col.names = c("Total in Use Housing", "Renter/Housing Ratio", 
+                                       "Owner/Housing Ratio", "Renter/Owner Ratio"), 
+                         caption = "Summary of CA Housing Across All Counties in 2021")
+countydem_kable
+
+countydem_kable2 <-kable(countydem5,longtable=T,booktabs=T, 
+                         col.names = c("Renters", "Owners"), 
+                         caption = "Total Number of Renters & Owners in CA in 2021")
+countydem_kable2
 ```
