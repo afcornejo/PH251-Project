@@ -1,11 +1,11 @@
 ---
 title: "COVID Vaccination Project"
 author: "Adrian Cornejo and Victor Guillera"
-date: "9/30/2021"
+date: "11/4/2021"
 output: pdf_document
 ---
 
-# Milestone 2
+#Milestone 2
 
 Section 1 
 
@@ -69,7 +69,10 @@ class(countydem)
 The structure of "countydem" reveals a data frame containing 
 23 columns and 58 rows with integer, character and number data types.
 
-```{r} 
+
+\newpage
+
+```{r, eval=F} 
 #Cleaning the data by removing unnecessary columns, rearranging the data,
 #and removing "N/A" data points.
 
@@ -84,18 +87,24 @@ names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12",
 
 covidvax2[is.na(covidvax2)] <- 0
 
-#Using the function str() we see that the selected varibales in covidvax2 are chr, int, chr, num, num 
-#We may need to convert the dates to numeric using the as.numeric() function to determine and compare vaccination rate. All other column types should be fine as is. 
-#Converting NA cells to 0 we allow ourselves to manipulate and describe entire numeric columns
+#Using the function str() we see that the selected varibales in covidvax2 
+#are chr, int, chr, num, num 
+#We may need to convert the dates to numeric using the as.numeric() function 
+#to determine and compare vaccination rate. All other column types should be 
+#fine as is. 
+#Converting NA cells to 0 we allow ourselves to manipulate and describe entire 
+#numeric columns.
 
 #Descriptions
 distinct(covidvax2, county, .keep_all = F)
 distinct(covidvax2, date, .keep_all = F)
 distinct(covidvax2, zip_code, .keep_all = F)
 
-covidvax2 %>% group_by(zip_code) %>% summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
+covidvax2 %>% group_by(zip_code) %>%
+  summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
 
-covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
+covidvax2 %>% 
+  summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
 
 #County Data 
 
@@ -114,6 +123,8 @@ for our study question. Converting NA cells to 0 we allow ourselves to
 manipulate and describe entire numeric columns. We also changed column names to 
 allow for easier/obvious verbiage.
 
+\newpage
+
 ```{r, eval=F}
 
 #Descriptions
@@ -124,29 +135,35 @@ distinct(covidvax2, zip_code, .keep_all = F)
 
 ```
 
-```{r}
+```{r, eval=F}
 
 covidvax2 %>% group_by(zip_code) %>% 
   summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
 
 ``` 
 Population Range and Median for COVID vaccinations for those over 12 years old.
-```{r}
+```{r, eval=F}
 covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
                         total_pop_median = median(total_pop_over_12))
 
-#Using the function str() we see that the selected varibales in countydem2 are chr, int, int, int, int 
+#Using the function str() we see that the selected variables 
+#in countydem2 are chr, int, int, int, int 
 #All column types should be fine as is for our study question
-#Converting NA cells to 0 we allow ourselves to manipulate and describe entire numeric columns
+#Converting NA cells to 0 we allow ourselves to manipulate and describe 
+#entire numeric columns.
 #Changed column names to easier/obvious verbiage
-
+```
 #Descriptions
-
+```{r}
 distinct(countydem2, county_name, .keep_all = F)
 
-countydem2 %>% summarise(renters_mean = mean(renters), owners_mean = mean(owners), vacant_mean = mean(vacant_housing), total_mean = mean(total_housing_units))
+countydem2 %>% summarise(renters_mean = mean(renters),
+                         owners_mean = mean(owners), 
+                         vacant_mean = mean(vacant_housing), total_mean = mean(total_housing_units))
 
-countydem2 %>% summarise(renters_range = range(renters), owners_range = range(owners), vacant_range = range(vacant_housing), total_range = range(total_housing_units))
+countydem2 %>% summarise(renters_range = range(renters), 
+                         owners_range = range(owners), 
+                         vacant_range = range(vacant_housing), total_range = range(total_housing_units))
 ```
 
 #Below, is the minimum, first quartile, median, third quartile, and max values.
@@ -190,10 +207,13 @@ fivenum(countydem2$total_housing_units)
 ```
 \newpage 
 
-# Milestone 3 
+
+##Milestone 3
+
 ```{r}
 
 #Covid Vaccination by County data manipulation (covidvax files)
+
 unique(covidvax2$county)
 
 covidvax2 <- covidvax2 %>% filter(county!="0")
@@ -218,7 +238,6 @@ covidvax3 <- covidvax2 %>%
 unique(covidvax3$month)
 
 ```
-`
 ```{r}
 
 covidvax4 <- covidvax3 %>% 
@@ -251,15 +270,17 @@ mutate(county_percent_fullvax =
 mutate(county_percent_partialvax =
 (county_partially_vaccinated)/(county_total_pop_over12))
 
+#Checking that our percentages make sense.
 summary(covidvax5$county_percent_fullvax)
 summary(covidvax5$county_percent_partialvax)
 ```
 County Demographic Data Editing
 ```{r}
+
 countydem3 <- countydem2 %>%
   mutate(total_in_use_housing = total_housing_units - vacant_housing) %>%
-  mutate(renter_housing_ratio = (total_housing_units - vacant_housing)/renters) %>%
-  mutate(owner_housing_ratio = (total_housing_units - vacant_housing)/owners) %>%
+  mutate(renter_housing_prop = (renters/(total_in_use_housing))) %>%
+  mutate(owner_housing_prop = (owners/(total_in_use_housing))) %>%
   mutate(renter_owner_ratio = renters/owners)
 ```
 
@@ -400,3 +421,5 @@ countydem_kable2 <-kable(countydem5,longtable=T,booktabs=T,
                          caption = "Total Number of Renters & Owners in CA in 2021")
 countydem_kable2
 ```
+
+\newpage
