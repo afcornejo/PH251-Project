@@ -72,7 +72,7 @@ The structure of "countydem" reveals a data frame containing
 
 \newpage
 
-```{r, eval=F} 
+```{r} 
 #Cleaning the data by removing unnecessary columns, rearranging the data,
 #and removing "N/A" data points.
 
@@ -106,6 +106,9 @@ covidvax2 %>% group_by(zip_code) %>%
 covidvax2 %>% 
   summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
 
+```
+
+```{r}
 #County Data 
 
 countydem2 <- select(countydem, "name", "renter_occ","owner_occ", 
@@ -115,13 +118,13 @@ names(countydem2) <-c("county_name","renters","owners",
                       "vacant_housing", "total_housing_units")
 
 countydem2[is.na(countydem2)] <- 0
-```
 
-Using the function str() we see that the selected varibales in 
-countydem2 are chr, int, int, int, int. All column types should be fine as is 
-for our study question. Converting NA cells to 0 we allow ourselves to 
-manipulate and describe entire numeric columns. We also changed column names to 
-allow for easier/obvious verbiage.
+#Using the function str() we see that the selected varibales in 
+#countydem2 are chr, int, int, int, int. All column types should be fine as is 
+#for our study question. Converting NA cells to 0 we allow ourselves to 
+#manipulate and describe entire numeric columns. We also changed column names to 
+#allow for easier/obvious verbiage.
+```
 
 \newpage
 
@@ -394,18 +397,21 @@ month.
 ```{r}
 countydem4 <- countydem3 %>%
   summarise(total_in_use_housing_range = summary(total_in_use_housing),
-            renter_housing_ratio_range = summary(renter_housing_ratio),
-            owner_housing_ratio_range = summary(owner_housing_ratio),
+            renter_housing_ratio_range = summary(renter_housing_prop),
+            owner_housing_ratio_range = summary(owner_housing_prop),
             renter_owner_ratio_range = summary(renter_owner_ratio)) 
 
 rownames(countydem4) <- c("Min", "1st Quartile", "Median", "Mean", "3rd Quartile", "Max")
+```
 
+```{r}
 countydem5 <- countydem3 %>%
   summarise(total_renters = sum(renters),
             total_owners = sum(owners))
 
 rownames(countydem5) <- c("Total Count")
 ```
+
 
 ```{r}
 library(kableExtra)
