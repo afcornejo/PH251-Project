@@ -5,7 +5,7 @@ date: "11/4/2021"
 output: pdf_document
 ---
 
-#Milestone 2
+# Milestone 2
 
 Section 1 
 
@@ -33,6 +33,8 @@ covidvax <- read.csv("cov_vax_admin.csv")
 
 ```
 
+\newpage
+
 To import the csv files, we used read_csv from base R and will 
 inspect our imported files first before we clean our data set.
 Libraries we loaded in were readr, dplyr, and tibble. We are going to pull 
@@ -52,7 +54,6 @@ class(covidvax)
 ```{r, eval=F}
 distinct(covidvax, as_of_date, .keep_all = F)
 ```
-
 The structure of the "cov_vax_admin" file is a data frame with 11 columns and 
 65,268 rows. The data frame contains integer, number, and character data types 
 and contains a redacted column that is inaccessible. There are also a total of 
@@ -72,11 +73,11 @@ The structure of "countydem" reveals a data frame containing
 
 \newpage
 
+Cleaning the data by removing unnecessary columns, rearranging the data,
+and removing "N/A" data points.
 ```{r} 
-#Cleaning the data by removing unnecessary columns, rearranging the data,
-#and removing "N/A" data points.
 
-#COVID Vaccination Rates
+#COVID Vaccination Rates Dataset
 covidvax2 <- select(covidvax, "county","zip_code_tabulation_area", "as_of_date",
                     "age12_plus_population", "persons_fully_vaccinated",
                     "persons_partially_vaccinated")
@@ -86,30 +87,33 @@ names(covidvax2) <- c("county", "zip_code", "date", "total_pop_over_12",
 
 
 covidvax2[is.na(covidvax2)] <- 0
-
-#Using the function str() we see that the selected varibales in covidvax2 
-#are chr, int, chr, num, num 
-#We may need to convert the dates to numeric using the as.numeric() function 
-#to determine and compare vaccination rate. All other column types should be 
-#fine as is. 
-#Converting NA cells to 0 we allow ourselves to manipulate and describe entire 
-#numeric columns.
-
-#Descriptions
-distinct(covidvax2, county, .keep_all = F)
-distinct(covidvax2, date, .keep_all = F)
-distinct(covidvax2, zip_code, .keep_all = F)
-
-covidvax2 %>% group_by(zip_code) %>%
-  summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
-
-covidvax2 %>% 
-  summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
-
 ```
+Using the function str() we see that the selected varibales in covidvax2 
+are chr, int, chr, num, num 
+We may need to convert the dates to numeric using the as.numeric() function 
+to determine and compare vaccination rate. All other column types should be 
+fine as is. 
+Converting NA cells to 0 we allow ourselves to manipulate and describe entire 
+numeric columns.
 
 ```{r}
-#County Data 
+#Descriptions
+#distinct(covidvax2, county, .keep_all = F)
+#distinct(covidvax2, date, .keep_all = F)
+#distinct(covidvax2, zip_code, .keep_all = F)
+
+covidvax2 %>% group_by(zip_code) %>%
+  summarise(fullyvax_range = range(fully_vaccinated), 
+            partiallyvax_range = range(partially_vaccinated))
+
+covidvax2 %>% 
+  summarise(total_pop_range = range(total_pop_over_12), 
+            total_pop_median = median(total_pop_over_12))
+```
+
+\newpage
+```{r}
+#County Demographics Dataset
 
 countydem2 <- select(countydem, "name", "renter_occ","owner_occ", 
                      "vacant", "hse_units")
@@ -118,59 +122,63 @@ names(countydem2) <-c("county_name","renters","owners",
                       "vacant_housing", "total_housing_units")
 
 countydem2[is.na(countydem2)] <- 0
-
-#Using the function str() we see that the selected varibales in 
-#countydem2 are chr, int, int, int, int. All column types should be fine as is 
-#for our study question. Converting NA cells to 0 we allow ourselves to 
-#manipulate and describe entire numeric columns. We also changed column names to 
-#allow for easier/obvious verbiage.
-```
-
-\newpage
+``` 
+Using the function str() we see that the selected varibales in 
+countydem2 are chr, int, int, int, int. All column types should be fine as is 
+for our study question. Converting NA cells to 0 we allow ourselves to 
+manipulate and describe entire numeric columns. We also changed column names to 
+allow for easier/obvious verbiage.
 
 ```{r, eval=F}
 
 #Descriptions
-
-distinct(covidvax2, county, .keep_all = F)
-distinct(covidvax2, date, .keep_all = F)
-distinct(covidvax2, zip_code, .keep_all = F)
+#distinct(covidvax2, county, .keep_all = F)
+#distinct(covidvax2, date, .keep_all = F)
+#distinct(covidvax2, zip_code, .keep_all = F)
 
 ```
 
 ```{r, eval=F}
 
 covidvax2 %>% group_by(zip_code) %>% 
-  summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
+  summarise(fullyvax_range = range(fully_vaccinated), 
+            partiallyvax_range = range(partially_vaccinated))
 
 ``` 
+
+\newpage 
+
 Population Range and Median for COVID vaccinations for those over 12 years old.
 ```{r, eval=F}
 covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
                         total_pop_median = median(total_pop_over_12))
-
-#Using the function str() we see that the selected variables 
-#in countydem2 are chr, int, int, int, int 
-#All column types should be fine as is for our study question
-#Converting NA cells to 0 we allow ourselves to manipulate and describe 
-#entire numeric columns.
-#Changed column names to easier/obvious verbiage
 ```
-#Descriptions
+Using the function str() we see that the selected variables 
+in countydem2 are chr, int, int, int, int 
+All column types should be fine as is for our study question
+Converting NA cells to 0 we allow ourselves to manipulate and describe 
+entire numeric columns.
+Changed column names to easier/obvious verbiage
+
 ```{r}
-distinct(countydem2, county_name, .keep_all = F)
+#Descriptions
+
+#distinct(countydem2, county_name, .keep_all = F)
 
 countydem2 %>% summarise(renters_mean = mean(renters),
                          owners_mean = mean(owners), 
-                         vacant_mean = mean(vacant_housing), total_mean = mean(total_housing_units))
+                         vacant_mean = mean(vacant_housing), 
+                         total_mean = mean(total_housing_units))
 
 countydem2 %>% summarise(renters_range = range(renters), 
                          owners_range = range(owners), 
-                         vacant_range = range(vacant_housing), total_range = range(total_housing_units))
+                         vacant_range = range(vacant_housing), 
+                         total_range = range(total_housing_units))
 ```
 
-#Below, is the minimum, first quartile, median, third quartile, and max values.
+\newpage
 
+Below, is the minimum, first quartile, median, third quartile, and max values.
 ```{r}
 fivenum(covidvax2$total_pop_over_12)
 fivenum(covidvax2$fully_vaccinated)
@@ -200,6 +208,9 @@ countydem2 %>%
                          total_range = range(total_housing_units))
 
 ```
+
+\newpage
+
 Below, we get the five number summary for data of interest in countydem2.
 ```{r}
 fivenum(countydem2$renters)
@@ -211,11 +222,10 @@ fivenum(countydem2$total_housing_units)
 \newpage 
 
 
-##Milestone 3
+## Milestone 3
 
 ```{r}
-
-#Covid Vaccination by County data manipulation (covidvax files)
+#Covid Vaccination by County, Data Manipulation (covidvax files)
 
 unique(covidvax2$county)
 
@@ -277,8 +287,10 @@ mutate(county_percent_partialvax =
 summary(covidvax5$county_percent_fullvax)
 summary(covidvax5$county_percent_partialvax)
 ```
-County Demographic Data Editing
+\newpage
+
 ```{r}
+#County Demographic Data Manipulation (countydem files)
 
 countydem3 <- countydem2 %>%
   mutate(total_in_use_housing = total_housing_units - vacant_housing) %>%
@@ -289,8 +301,8 @@ countydem3 <- countydem2 %>%
 
 \newpage
 
-#Data Dictionary
 
+Data Dictionary
 ```{r, eval=F}
 
 str(countydem3)
@@ -298,7 +310,7 @@ str(covidvax5)
 
 ```
 
-#County Demographics Data Set
+County Demographics Data Set:
 
 Name: county_name
 Data type: character
@@ -342,7 +354,7 @@ each county in California.
 
 \newpage
 
-#Covid Vaccination Rate Data Set
+Covid Vaccination Rate Data Set:
 
 Name:county
 Data type: character
@@ -393,7 +405,7 @@ month.
 
 \newpage
 
-#Descriptive Statistics Tables
+Descriptive Statistics Tables
 ```{r}
 countydem4 <- countydem3 %>%
   summarise(total_in_use_housing_range = summary(total_in_use_housing),
@@ -424,8 +436,7 @@ countydem_kable
 
 countydem_kable2 <-kable(countydem5,longtable=T,booktabs=T, 
                          col.names = c("Renters", "Owners"), 
-                         caption = "Total Number of Renters & Owners in CA in 2021")
+                         caption = "Total Number of Renters and Owners in CA in 2021")
 countydem_kable2
 ```
 
-\newpage
