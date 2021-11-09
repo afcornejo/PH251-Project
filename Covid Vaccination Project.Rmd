@@ -75,7 +75,7 @@ The structure of "countydem" reveals a data frame containing
 
 \newpage
 
-```{r, eval=F} 
+```{r} 
 #Cleaning the data by removing unnecessary columns, rearranging the data,
 #and removing "N/A" data points.
 
@@ -97,7 +97,8 @@ covidvax2[is.na(covidvax2)] <- 0
 #fine as is. 
 #Converting NA cells to 0 we allow ourselves to manipulate and describe entire 
 #numeric columns.
-
+```
+```{r, eval=F}
 #Descriptions
 distinct(covidvax2, county, .keep_all = F)
 distinct(covidvax2, date, .keep_all = F)
@@ -108,7 +109,9 @@ covidvax2 %>% group_by(zip_code) %>%
 
 covidvax2 %>% 
   summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
+```
 
+```{r}
 #County Data 
 
 countydem2 <- select(countydem, "name", "renter_occ","owner_occ", 
