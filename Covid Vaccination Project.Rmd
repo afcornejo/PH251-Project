@@ -438,5 +438,8 @@ countydem_kable2 <-kable(countydem5,longtable=T,booktabs=T,
                          col.names = c("Renters", "Owners"), 
                          caption = "Total Number of Renters and Owners in CA in 2021")
 countydem_kable2
+
+#does not make sense to visualize covidvax dataset in a kable, will update visualization 
+#with graph using ggplot in milestone 4
 ```
 
