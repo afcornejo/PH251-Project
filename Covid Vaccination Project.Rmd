@@ -393,7 +393,37 @@ Name:county_percent_partialvax
 Data type: number
 Description: Percentage of people partially vaccinated over the age of 12 over the
 total population over 12 years old in each county in California for a specific
-month.
+month.\newpage
+
+Descriptive Statistics Tables
+```{r}
+countydem4 <- countydem3 %>%
+  summarise(total_in_use_housing_range = summary(total_in_use_housing),
+            renter_housing_ratio_range = summary(renter_housing_prop),
+            owner_housing_ratio_range = summary(owner_housing_prop),
+            renter_owner_ratio_range = summary(renter_owner_ratio)) 
+rownames(countydem4) <- c("Min", "1st Quartile", "Median", "Mean", "3rd Quartile", "Max")
+```
+
+```{r}
+countydem5 <- countydem3 %>%
+  summarise(total_renters = sum(renters),
+            total_owners = sum(owners))
+rownames(countydem5) <- c("Total Count")
+```
 
 
-\newpage
+```{r}
+library(kableExtra)
+countydem_kable <- kable(countydem4,longtable=T,booktabs=T, 
+                         col.names = c("Total in Use Housing", "Renter/Housing Ratio", 
+                                       "Owner/Housing Ratio", "Renter/Owner Ratio"), 
+                         caption = "Summary of CA Housing Across All Counties in 2021")
+countydem_kable
+countydem_kable2 <-kable(countydem5,longtable=T,booktabs=T, 
+                         col.names = c("Renters", "Owners"), 
+                         caption = "Total Number of Renters and Owners in CA in 2021")
+countydem_kable2
+#does not make sense to visualize covidvax dataset in a kable, will update visualization 
+#with graph using ggplot in milestone 4
+```
