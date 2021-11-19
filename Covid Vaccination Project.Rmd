@@ -443,3 +443,49 @@ countydem_kable2
 #with graph using ggplot in milestone 4
 ```
 
+```{r}
+countydem3$county_name <- toupper(countydem3$county_name)
+
+
+combined <- right_join(countydem3, covidvax5, by=c("county_name" = "county"))
+```
+
+```{r}
+covidvax6top5 <- covidvax5 %>% filter(county == "SAN FRANCISCO" | 
+                                      county == "LOS ANGELES" | 
+                                      county =="MONTEREY" |
+                                      county == "SANTA BARBARA" |
+                                      county == "YOLO")
+
+covidvax6top5 <- covidvax6top5 %>% select(-c(county_total_pop_over12, county_fully_vaccinated, 
+                                             county_partially_vaccinated))
+
+covidvax6bottom5 <- covidvax5 %>% filter(county == "SIERRA" | 
+                                         county == "NEVADA" | 
+                                         county =="EL DORADO" |
+                                         county == "AMADOR" |
+                                         county == "CALAVERAS")
+
+covidvax6bottom5 <- covidvax6bottom5 %>% select(-c(county_total_pop_over12, county_fully_vaccinated, 
+                                             county_partially_vaccinated))
+```
+
+```{r}
+library(ggplot2)
+
+covidvax6top5$month <- factor(covidvax6top5$month, 
+                                  levels = c("January", "February", "March",
+                                             "April", "May", "June", "July",
+                                             "August", "September", "October",
+                                             "November", "December"))
+
+covidvax6top5$county <- factor(covidvax6top5$county, 
+                                  levels = c("SAN FRANCISCO", "LOS ANGELES",
+                                             "MONTEREY", "SANTA BARBARA",
+                                             "YOLO"))
+
+ggplot(data = covidvax6top5, aes(x=month, y=county_percent_fullvax, color = county, group = county)) +
+  geom_point() +
+  geom_line()
+```
+
