@@ -258,6 +258,19 @@ covidvax4 <- covidvax4 %>%
   select(-"zip_code",-"total_pop_over_12",-"fully_vaccinated",
          -"partially_vaccinated")
 
+#Ensuring we get the last date for each month's final total vaccinations
+
+unique(covidvax4$date)
+
+covidvax4 <- covidvax4 %>% filter(date == "2021-01-26"| date == "2021-02-23" |
+                                    date == "2021-03-30" |
+                                    date == "2021-04-27" |
+                                    date == "2021-05-25" |
+                                    date == "2021-06-29" |
+                                    date == "2021-07-27" |
+                                    date == "2021-08-31" |
+                                    date == "2021-09-14")
+
 ```
 
 ```{r}
@@ -397,33 +410,123 @@ month.\newpage
 
 Descriptive Statistics Tables
 ```{r}
-countydem4 <- countydem3 %>%
+descstatsdem <- countydem3 %>%
   summarise(total_in_use_housing_range = summary(total_in_use_housing),
             renter_housing_ratio_range = summary(renter_housing_prop),
             owner_housing_ratio_range = summary(owner_housing_prop),
             renter_owner_ratio_range = summary(renter_owner_ratio)) 
-rownames(countydem4) <- c("Min", "1st Quartile", "Median", "Mean", "3rd Quartile", "Max")
+rownames(descstatsdem) <- c("Min", "1st Quartile", "Median", "Mean", "3rd Quartile", "Max")
 ```
 
 ```{r}
-countydem5 <- countydem3 %>%
+descstatsdem2 <- countydem3 %>%
   summarise(total_renters = sum(renters),
             total_owners = sum(owners))
 rownames(countydem5) <- c("Total Count")
+
 ```
 
 
 ```{r}
 library(kableExtra)
-countydem_kable <- kable(countydem4,longtable=T,booktabs=T, 
+countydem_kable <- kable(descstatsdem,longtable=T,booktabs=T, 
                          col.names = c("Total in Use Housing", "Renter/Housing Ratio", 
                                        "Owner/Housing Ratio", "Renter/Owner Ratio"), 
                          caption = "Summary of CA Housing Across All Counties in 2021")
 countydem_kable
-countydem_kable2 <-kable(countydem5,longtable=T,booktabs=T, 
+countydem_kable2 <-kable(descstatsdem2,longtable=T,booktabs=T, 
                          col.names = c("Renters", "Owners"), 
                          caption = "Total Number of Renters and Owners in CA in 2021")
 countydem_kable2
 #does not make sense to visualize covidvax dataset in a kable, will update visualization 
 #with graph using ggplot in milestone 4
 ```
+
+Milestone 4
+
+```{r} 
+#Creating a combined data set.
+
+countydem3$county_name <- toupper(countydem3$county_name)
+
+
+combined <- right_join(countydem3, covidvax5, by=c("county_name" = "county"))
+
+```
+
+```{r}
+library(ggplot2)
+
+countydem4 <- countydem3 %>% arrange(desc(renter_owner_ratio))
+
+countydem4subset <- countydem4 %>% slice(1:5, 54:58)
+
+countydem4subset$county_name <- factor(countydem4subset$county_name, levels = countydem4subset$county_name[order(10:1)])
+                       
+countydem4subset <- countydem4subset %>% 
+  mutate(status = 
+         case_when(
+                   renter_owner_ratio >= 0.75 ~ "Top 5",
+                   renter_owner_ratio < 0.75 ~ "Bottom 5"
+                                          ))
+countydem4subset$status <- factor(countydem4subset$status, 
+                                  levels = c("Top 5", "Bottom 5"))
+
+```
+
+```{r}
+
+#Graph 1 creation
+
+countydem4subset %>% ggplot(aes(y= county_name,
+                                 x=renter_owner_ratio)) + 
+  geom_point(aes(color=status)) + labs(
+    
+  x = "Renter to Owner Ratio", title=
+    "Renter-to-Owner Ratios in CA: Top Five and Bottom Five Counties ",
+  y ="California County", fill ="Rank", color="County Status") + 
+  scale_x_continuous(breaks=seq(0,2,0.10)) +
+  theme_linedraw()
+
+```
+
+```{r}
+#Graph 2 creation
+covidvax6top5 <- covidvax5 %>% filter(county == "SAN FRANCISCO" | 
+                                      county == "LOS ANGELES" | 
+                                      county =="MONTEREY" |
+                                      county == "SANTA BARBARA" |
+                                      county == "YOLO")
+
+covidvax6top5 <- covidvax6top5 %>% select(-c(county_total_pop_over12, county_fully_vaccinated, 
+                                             county_partially_vaccinated))
+
+covidvax6bottom5 <- covidvax5 %>% filter(county == "SIERRA" | 
+                                         county == "NEVADA" | 
+                                         county =="EL DORADO" |
+                                         county == "AMADOR" |
+                                         county == "CALAVERAS")
+
+covidvax6bottom5 <- covidvax6bottom5 %>% select(-c(county_total_pop_over12, county_fully_vaccinated, 
+                                             county_partially_vaccinated))
+```
+
+```{r}
+
+covidvax6top5$month <- factor(covidvax6top5$month, 
+                                  levels = c("January", "February", "March",
+                                             "April", "May", "June", "July",
+                                             "August", "September", "October",
+                                             "November", "December"))
+
+covidvax6top5$county <- factor(covidvax6top5$county, 
+                                  levels = c("SAN FRANCISCO", "LOS ANGELES",
+                                             "MONTEREY", "SANTA BARBARA",
+                                             "YOLO"))
+
+ggplot(data = covidvax6top5, aes(x=month, y=county_percent_fullvax, color = county, group = county)) +
+  geom_point() +
+  geom_line()
+```
+
+
