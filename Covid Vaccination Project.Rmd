@@ -5,7 +5,7 @@ date: "11/4/2021"
 output: pdf_document
 ---
 
-#Milestone 2
+# Milestone 2
 
 Section 1 
 
@@ -214,7 +214,9 @@ fivenum(countydem2$vacant_housing)
 fivenum(countydem2$total_housing_units)
 
 ```
-##Milestone 3
+\newpage
+
+# Milestone 3
 
 ```{r}
 
@@ -422,7 +424,7 @@ rownames(descstatsdem) <- c("Min", "1st Quartile", "Median", "Mean", "3rd Quarti
 descstatsdem2 <- countydem3 %>%
   summarise(total_renters = sum(renters),
             total_owners = sum(owners))
-rownames(countydem5) <- c("Total Count")
+rownames(descstatsdem2) <- c("Total Count")
 
 ```
 
@@ -441,9 +443,9 @@ countydem_kable2
 #does not make sense to visualize covidvax dataset in a kable, will update visualization 
 #with graph using ggplot in milestone 4
 ```
+\newpage
 
-
-### Milestone 4
+# Milestone 4
 
 ```{r} 
 #Creating a combined data set.
@@ -459,7 +461,8 @@ countydem4 <- countydem3 %>% arrange(desc(renter_owner_ratio))
 
 countydem4subset <- countydem4 %>% slice(1:5, 54:58)
 
-countydem4subset$county_name <- factor(countydem4subset$county_name, levels = countydem4subset$county_name[order(10:1)])
+countydem4subset$county_name <- factor(countydem4subset$county_name, 
+                                       levels = countydem4subset$county_name[order(10:1)])
                        
 countydem4subset <- countydem4subset %>% 
   mutate(status = 
@@ -479,7 +482,7 @@ library(ggplot2)
 countydem4subset %>% ggplot(aes(y= county_name, x=renter_owner_ratio)) + 
   geom_point(aes(color=status)) + 
   labs(x = "Renter to Owner Ratio", 
-       title= "Renter-to-Owner Ratios in CA: Top Five and Bottom Five Counties ",
+       title= "Renter-to-Owner Ratios in CA: Top 5 and Bottom 5 Counties ",
        y ="California County", fill ="Rank", 
        color="County Status") + 
   scale_x_continuous(breaks=seq(0,2,0.10)) +
@@ -496,7 +499,8 @@ covidvax6top5 <- covidvax5 %>% filter(county == "SAN FRANCISCO" |
                                       county == "SANTA BARBARA" |
                                       county == "YOLO")
 
-covidvax6top5 <- covidvax6top5 %>% select(-c(county_total_pop_over12, county_fully_vaccinated, 
+covidvax6top5 <- covidvax6top5 %>% select(-c(county_total_pop_over12, 
+                                             county_fully_vaccinated, 
                                              county_partially_vaccinated))
 
 covidvax6bottom5 <- covidvax5 %>% filter(county == "SIERRA" | 
@@ -505,7 +509,8 @@ covidvax6bottom5 <- covidvax5 %>% filter(county == "SIERRA" |
                                          county == "AMADOR" |
                                          county == "CALAVERAS")
 
-covidvax6bottom5 <- covidvax6bottom5 %>% select(-c(county_total_pop_over12, county_fully_vaccinated, 
+covidvax6bottom5 <- covidvax6bottom5 %>% select(-c(county_total_pop_over12, 
+                                                   county_fully_vaccinated, 
                                              county_partially_vaccinated))
 ```
 
@@ -522,11 +527,12 @@ covidvax6top5$county <- factor(covidvax6top5$county,
                                              "MONTEREY", "SANTA BARBARA",
                                              "YOLO"))
 
-ggplot(data = covidvax6top5, aes(x=month, y=county_percent_fullvax, color = county, group = county)) +
+ggplot(data = covidvax6top5, aes(x=month, y=county_percent_fullvax, 
+                                 color = county, group = county)) +
   geom_point() +
   geom_line() +
   labs(x="Month", y="Percentage of Fully Vaccinated Individuals", 
-       title="Rate of Full COVID-19 Vaccination: Top 5 Counties by Renter-to-Owner Ratio",
+       title="COVID-19 Vaccination Rates: Top 5 Counties by Renter/Owner Ratio",
        color="County") +
   theme_bw()
 ```
@@ -542,11 +548,12 @@ covidvax6bottom5$county <- factor(covidvax6bottom5$county,
                                              "EL DORADO", "AMADOR",
                                              "CALAVERAS"))
 
-ggplot(data = covidvax6bottom5, aes(x=month, y=county_percent_fullvax, color = county, group = county)) +
+ggplot(data = covidvax6bottom5, aes(x=month, y=county_percent_fullvax, 
+                                    color = county, group = county)) +
   geom_point() +
   geom_line() +
   labs(x="Month", y="Percentage of Fully Vaccinated Individuals", 
-       title="Rate of Full COVID-19 Vaccination: Bottom 5 Counties by Renter-to-Owner Ratio",
+       title="COVID-19 Vaccination Rate: Bottom 5 Counties by Renter/Owner Ratio",
        color="County") +
   theme_bw()
 ```
@@ -565,5 +572,26 @@ combined <- combined %>% filter(county_name == "SAN FRANCISCO" |
                                 county_name == "AMADOR" |
                                 county_name == "CALAVERAS") %>%
   select(county_name, month, renter_owner_ratio, county_percent_fullvax)
+
+library(tidyr)
+
+combined1 <- combined %>% pivot_wider(names_from = month, 
+                                     values_from = county_percent_fullvax) 
+
+combined1 <- combined1 %>% arrange(-desc(renter_owner_ratio))
+
+combined2 <- combined1 %>% mutate_if(is.numeric, round, digits = 3)
+
+combined_kable <- kable(combined2,longtable=T,booktabs=T,
+                         col.names = c("County", "Renter/Owner Ratio", 
+                                       "Jan", "Feb", "March", "April", "May", "June", 
+                                       "July", "Aug", "Sep"), 
+                         caption = "COVID-19 Vaccination Rate by Renter/Owner 
+                         Ratio in Top 5 and Bottom 5 Counties in CA in 2021") #%>%
+  #kable_styling() %>%
+  #pack_rows("Bottom 5", 1,5) %>%
+  #pack_rows("Top 5", 6,10)
+  
+combined_kable
 ```
 

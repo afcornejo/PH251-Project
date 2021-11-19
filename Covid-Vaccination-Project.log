@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.1)  9 NOV 2021 00:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.1)  19 NOV 2021 22:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -600,41 +600,80 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 144.
-[1
 
-{/opt/texlive/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (32.74132pt too wide) in paragraph at lines 178--185
+Overfull \hbox (32.74132pt too wide) in paragraph at lines 176--183
 \T1/lmr/m/n/10 ``age12_plus_population'', and ``county'' from the covid-vax csv
  file. We will pull ``name'', ``renter_occ'',``owner_occ'',
  []
 
-[2]
-Overfull \hbox (39.4935pt too wide) in paragraph at lines 265--265
-[]\T1/lmtt/m/n/10 ## `summarise()` has grouped output by 'zip_code'. You can ov
-erride using the `.groups` argument.[] 
- []
+[1
 
-[3] [4] [5] [6] [7] [8] [9] [10] [11] [12]
-Overfull \hbox (21.05035pt too wide) in alignment at lines 801--814
+{/opt/texlive/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] [5] [6
+] [7] [8] [9] [10] [11]
+Overfull \hbox (21.05035pt too wide) in alignment at lines 849--862
  [] [] [] [] [] 
  []
 
-[13] (./Covid-Vaccination-Project.aux)
+[12]
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-28-1.pdf, id=77, 45
+7.71pt x 316.18124pt>
+File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-28-1.pdf Graph
+ic file (type pdf)
+<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-28-1.pdf>
+Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
+hunk-28-1.pdf  used on input line 942.
+(pdftex.def)             Requested size: 457.72984pt x 316.19493pt.
+[13]
+Underfull \vbox (badness 10000) detected at line 991
+ []
+
+[14 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-28-1.pdf>]
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf, id=95, 45
+7.71pt x 313.17pt>
+File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf Graph
+ic file (type pdf)
+<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf>
+Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
+hunk-30-1.pdf  used on input line 993.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+
+Underfull \vbox (badness 1354) detected at line 1017
+ []
+
+[15 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf>]
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf, id=107, 4
+57.71pt x 313.17pt>
+File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf Graph
+ic file (type pdf)
+<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf>
+Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
+hunk-31-1.pdf  used on input line 1019.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+
+Underfull \vbox (badness 2343) detected at line 1058
+ []
+
+[16 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf>]
+Overfull \hbox (52.04948pt too wide) in alignment at lines 1060--1078
+ [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[17] (./Covid-Vaccination-Project.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `Covid-Vaccination-Project.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: F40E18C96B52E9AE98B9BDC0D57DC6EF;214.
+(rerunfilecheck)             Checksum: B8D2D88DCA71E9A024170E3A563E12E5;306.
  ) 
 Here is how much of TeX's memory you used:
- 12639 strings out of 480796
- 180920 string characters out of 5904982
- 508798 words of memory out of 5000000
- 29762 multiletter control sequences out of 15000+600000
- 434751 words of font info for 53 fonts, out of 8000000 for 9000
+ 12671 strings out of 480796
+ 182497 string characters out of 5904982
+ 507043 words of memory out of 5000000
+ 29783 multiletter control sequences out of 15000+600000
+ 431753 words of font info for 52 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,7n,63p,530b,361s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,7n,63p,530b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texli
 ve/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/texmf-dist/f
 onts/type1/public/lm/lmr10.pfb></usr/local/texlive/texmf-dist/fonts/type1/publi
@@ -642,10 +681,10 @@ c/lm/lmr12.pfb></usr/local/texlive/texmf-dist/fonts/type1/public/lm/lmr17.pfb><
 /usr/local/texlive/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texl
 ive/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/texmf-dist/
 fonts/type1/public/lm/lmtti10.pfb>
-Output written on Covid-Vaccination-Project.pdf (13 pages, 199192 bytes).
+Output written on Covid-Vaccination-Project.pdf (17 pages, 231391 bytes).
 PDF statistics:
- 110 PDF objects out of 1000 (max. 8388607)
- 87 compressed objects within 1 object stream
- 20 named destinations out of 1000 (max. 500000)
- 17 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 158 PDF objects out of 1000 (max. 8388607)
+ 121 compressed objects within 2 object streams
+ 27 named destinations out of 1000 (max. 500000)
+ 40 words of extra memory for PDF output out of 10000 (max. 10000000)
 
