@@ -258,6 +258,8 @@ covidvax4 <- covidvax4 %>%
   select(-"zip_code",-"total_pop_over_12",-"fully_vaccinated",
          -"partially_vaccinated")
 
+#Ensuring we get the last date for each month's final total vaccinations
+
 unique(covidvax4$date)
 
 covidvax4 <- covidvax4 %>% filter(date == "2021-01-26"| date == "2021-02-23" |
