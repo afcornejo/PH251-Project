@@ -22,7 +22,7 @@ all counties from the US census data for 2014 to 2019.
 Below, we read in our libraries, data sets, explore our data sets, 
 and then proceed to clean the data sets.
 
-
+\newpage
 
 ```{r}
 library(readr)
@@ -32,7 +32,6 @@ library(dplyr)
 library(stringr)
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
-
 ```
 
 
@@ -61,6 +60,7 @@ The structure of the "cov_vax_admin" file is a data frame with 11 columns and
 and contains a redacted column that is inaccessible. There are also a total of 
 27 unique dates, each 7 weeks apart (weekly results). 
 
+\newpage
 
 ```{r, results = "hide"}
 str(countydem)
@@ -73,7 +73,7 @@ class(countydem)
 The structure of "countydem" reveals a data frame containing 
 23 columns and 58 rows with integer, character and number data types.
 
-\newpage
+
 
 ```{r, results = "hide" } 
 #Cleaning the data by removing unnecessary columns, rearranging the data,
@@ -159,7 +159,8 @@ covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
 #entire numeric columns.
 #Changed column names to easier/obvious verbiage
 ```
-#Descriptions
+
+Descriptions
 ```{r, results = "hide"}
 distinct(countydem2, county_name, .keep_all = F)
 
@@ -172,7 +173,7 @@ countydem2 %>% summarise(renters_range = range(renters),
                          vacant_range = range(vacant_housing), total_range = range(total_housing_units))
 ```
 
-#Below, is the minimum, first quartile, median, third quartile, and max values.
+Below, is the minimum, first quartile, median, third quartile, and max values.
 
 ```{r, results = "hide"}
 fivenum(covidvax2$total_pop_over_12)
@@ -180,9 +181,9 @@ fivenum(covidvax2$fully_vaccinated)
 fivenum(covidvax2$partially_vaccinated)
 ```
 
+\newpage 
 
 ```{r, results = "hide"}
-
 
 #Descriptions
 
@@ -458,8 +459,7 @@ countydem3$county_name <- toupper(countydem3$county_name)
 combined <- right_join(countydem3, covidvax5, by=c("county_name" = "county"))
 ```
 
-```{r}
-#Table 
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
 
 combined <- combined %>% filter(county_name == "SAN FRANCISCO" | 
                                 county_name == "LOS ANGELES" | 
@@ -489,13 +489,18 @@ combined_kable <- kable(combined2,longtable=T,booktabs=T,
                                        "July", "Aug", "Sep"), 
                          caption = "COVID-19 Vaccination Rate by Renter/Owner 
                        Ratio in Top 5 and Bottom 5 Counties in CA in 2021") %>%
-  kable_styling(combined_kable, 
-                bootstrap_options = c("striped", "hover"), full_width = F) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F,
+                font_size = 7) %>%
   row_spec(1:5, bold = TRUE, color = "#CB3155") %>%
   row_spec(6:10, bold = TRUE, color = "#28A69D") %>%
-  footnote(general = "Data in pink corresponds with the Top 5 Renter/Owner
-           Ratios and their counties while the data in blue is for the Bottom 5. ")
-  
+  footnote(general_title = "Note.", 
+           footnote_as_chunk = TRUE,
+           threeparttable = TRUE,
+           general  ="Pink =Top 5 counties & Blue = Bottom 5 counties."
+           )
+```
+\newpage
+```{r}
 combined_kable
 ```
 
@@ -558,6 +563,8 @@ Yolo county and that San Francisco is an outlier in this graph, with an
 extremely high amount of people renting housing compared
 to who actually owns homes.
 
+\newpage
+
 ```{r}
 #Graph 2 creation
 covidvax6top5 <- covidvax5 %>% filter(county == "SAN FRANCISCO" | 
@@ -611,7 +618,7 @@ individuals starting in March and reached an astonishing 80% coverage of its
 "over 12" population. Other counties had a very similar pattern of coverage
 during this period.
 
-
+\newpage
 
 ```{r}
 covidvax6bottom5$month <- factor(covidvax6bottom5$month, 
