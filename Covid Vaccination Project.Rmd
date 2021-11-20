@@ -12,7 +12,7 @@ Section 1
 This data set will relate to our question if being a homeowner status and 
 available housing impacts vaccination rates per CA county. While not a perfect 
 representation of SES of cases, this data set will help us elucidate if there is
-a trend via linear regression between the homeowner-related to renter rates and
+a relationship between the homeowner-related to renter rates and
 the vaccination rate per county.
 
 We have two data sets, one is of COVID-19 vaccination progress throughout 
