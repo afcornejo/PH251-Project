@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.1)  20 NOV 2021 03:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.11.1)  30 NOV 2021 23:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -603,80 +603,97 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 146.
 
-Overfull \hbox (32.74132pt too wide) in paragraph at lines 178--185
+Overfull \hbox (32.74132pt too wide) in paragraph at lines 179--186
 \T1/lmr/m/n/10 ``age12_plus_population'', and ``county'' from the covid-vax csv
  file. We will pull ``name'', ``renter_occ'',``owner_occ'',
  []
 
 [2] [3] [4]
-Overfull \hbox (39.4935pt too wide) in paragraph at lines 307--307
+Overfull \hbox (39.4935pt too wide) in paragraph at lines 308--308
 []\T1/lmtt/m/n/10 ## `summarise()` has grouped output by 'zip_code'. You can ov
 erride using the `.groups` argument.[] 
  []
 
 [5] [6]
-Underfull \vbox (badness 10000) detected at line 500
+Underfull \vbox (badness 10000) detected at line 501
  []
 
 [7] [8] [9] [10]
-Overfull \hbox (21.05035pt too wide) in alignment at lines 658--671
+Overfull \hbox (21.05035pt too wide) in alignment at lines 659--672
  [] [] [] [] [] 
  []
 
 [11] [12]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 789.
+(Font)              <7> on input line 737.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 789.
+(Font)              <5> on input line 737.
 
-Overfull \hbox (2.50252pt too wide) in alignment at lines 771--790
+Overfull \hbox (2.50252pt too wide) in alignment at lines 719--738
  [] [] [] [] [] [] [] [] [] [] [] 
  []
 
-[13]
-<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf, id=87, 45
-7.71pt x 316.18124pt>
-File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf Graph
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-29-1.pdf, id=78, 46
+3.7325pt x 713.66624pt>
+File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-29-1.pdf Graph
 ic file (type pdf)
-<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf>
+<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-29-1.pdf>
 Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
-hunk-30-1.pdf  used on input line 845.
+hunk-29-1.pdf  used on input line 749.
+(pdftex.def)             Requested size: 422.66237pt x 650.46092pt.
+[13] [14 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-29-1.pdf
+>]
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf, id=99, 45
+7.71pt x 316.18124pt>
+File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf Graph
+ic file (type pdf)
+<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf>
+Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
+hunk-31-1.pdf  used on input line 753.
 (pdftex.def)             Requested size: 457.72984pt x 316.19493pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 845--852
+Underfull \hbox (badness 10000) in paragraph at lines 753--758
 [][]
  []
 
-[14 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-30-1.pdf>]
-<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-32-1.pdf, id=99, 45
-7.71pt x 313.17pt>
-File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-32-1.pdf Graph
-ic file (type pdf)
-<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-32-1.pdf>
-Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
-hunk-32-1.pdf  used on input line 904.
-(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 904--911
-[][]
- []
-
-[15] [16 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-32-1.pdf
->]
-<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-33-1.pdf, id=115, 4
+[15 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-31-1.pdf>]
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-33-1.pdf, id=111, 4
 57.71pt x 313.17pt>
 File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-33-1.pdf Graph
 ic file (type pdf)
 <use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-33-1.pdf>
 Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
-hunk-33-1.pdf  used on input line 938.
+hunk-33-1.pdf  used on input line 761.
 (pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 938--944
+Underfull \hbox (badness 10000) in paragraph at lines 761--768
 [][]
  []
 
-[17 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-33-1.pdf>] (.
+[16 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-33-1.pdf>]
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-34-1.pdf, id=123, 4
+57.71pt x 313.17pt>
+File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-34-1.pdf Graph
+ic file (type pdf)
+<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-34-1.pdf>
+Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
+hunk-34-1.pdf  used on input line 771.
+(pdftex.def)             Requested size: 457.72285pt x 313.17877pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 771--777
+[][]
+ []
+
+[17 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-34-1.pdf>]
+<Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-37-1.pdf, id=135, 4
+57.71pt x 493.845pt>
+File: Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-37-1.pdf Graph
+ic file (type pdf)
+<use Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-37-1.pdf>
+Package pdftex.def Info: Covid-Vaccination-Project_files/figure-latex/unnamed-c
+hunk-37-1.pdf  used on input line 780.
+(pdftex.def)             Requested size: 457.7089pt x 493.84378pt.
+[18 <./Covid-Vaccination-Project_files/figure-latex/unnamed-chunk-37-1.pdf>] (.
 /Covid-Vaccination-Project.aux)
 
 LaTeX Warning: There were multiply-defined labels.
@@ -686,10 +703,10 @@ ed.
 (rerunfilecheck)             Checksum: B8D2D88DCA71E9A024170E3A563E12E5;306.
  ) 
 Here is how much of TeX's memory you used:
- 12700 strings out of 480796
- 182780 string characters out of 5904982
- 512096 words of memory out of 5000000
- 29800 multiletter control sequences out of 15000+600000
+ 12715 strings out of 480796
+ 183745 string characters out of 5904982
+ 507041 words of memory out of 5000000
+ 29812 multiletter control sequences out of 15000+600000
  453006 words of font info for 66 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,11n,63p,540b,361s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -702,10 +719,10 @@ ve/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/texmf-dist/fon
 ts/type1/public/lm/lmri7.pfb></usr/local/texlive/texmf-dist/fonts/type1/public/
 lm/lmtk10.pfb></usr/local/texlive/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><
 /usr/local/texlive/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Covid-Vaccination-Project.pdf (17 pages, 296998 bytes).
+Output written on Covid-Vaccination-Project.pdf (18 pages, 309410 bytes).
 PDF statistics:
- 170 PDF objects out of 1000 (max. 8388607)
- 130 compressed objects within 2 object streams
- 27 named destinations out of 1000 (max. 500000)
- 40 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 190 PDF objects out of 1000 (max. 8388607)
+ 143 compressed objects within 2 object streams
+ 28 named destinations out of 1000 (max. 500000)
+ 50 words of extra memory for PDF output out of 10000 (max. 10000000)
 
