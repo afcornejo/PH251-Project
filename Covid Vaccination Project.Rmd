@@ -1,15 +1,11 @@
 ---
-title: "COVID Vaccination Project"
+title: "COVID-19 Vaccination Project"
 author: "Adrian Cornejo and Victor Guillera"
-date: "11/4/2021"
+date: "11/30/2021"
 output: pdf_document
 ---
 
-# Milestone 2
-
-Section 1 
-
-This data set will relate to our question if being a homeowner status and 
+These data sets relate to our question if being a homeowner status and 
 available housing impacts vaccination rates per CA county. While not a perfect 
 representation of SES of cases, this data set will help us elucidate if there is
 a relationship between the homeowner-related to renter rates and
@@ -24,26 +20,28 @@ and then proceed to clean the data sets.
 
 \newpage
 
-```{r}
+```{r, echo=F, message=F}
 library(readr)
 library(knitr)
 library(tibble)
 library(dplyr)
 library(stringr)
 library(ggplot2)
+library(kableExtra)
+
 countydem <- read.csv("ca_county_demographics.csv")
 covidvax <- read.csv("cov_vax_admin.csv")
+
+#To import the csv files, we used read_csv from base R and will 
+#inspect our imported files first before we clean our data set.
+#Libraries we loaded in were readr, dplyr, and tibble. We are going to pull 
+#variables "persons_fully_vaccinated", "persons_partially_vaccinated", 
+#"zip_code_tabulation_area", "age12_plus_population", and "county" from the
+#covidvax csv file. We will pull "name", "renter_occ","owner_occ", "hse_units" 
+#and "vacant" variables.
 ```
 
-
-To import the csv files, we used read_csv from base R and will 
-inspect our imported files first before we clean our data set.
-Libraries we loaded in were readr, dplyr, and tibble. We are going to pull 
-variables "persons_fully_vaccinated", "persons_partially_vaccinated", 
-"zip_code_tabulation_area", "age12_plus_population", and "county" from the
-covidvax csv file. We will pull "name", "renter_occ","owner_occ", "hse_units" 
-and "vacant" variables.
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
 str(covidvax)
 head(covidvax)
 nrow(covidvax)
@@ -52,31 +50,31 @@ typeof(covidvax)
 class(covidvax)
 ```
 
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
 distinct(covidvax, as_of_date, .keep_all = F)
+
+#The structure of the "cov_vax_admin" file is a data frame with 11 columns and 
+#65,268 rows. The data frame contains integer, number, and character data types 
+#and contains a redacted column that is inaccessible. There are also a total of 
+#27 unique dates, each 7 weeks apart (weekly results). 
+
 ```
 
-The structure of the "cov_vax_admin" file is a data frame with 11 columns and 
-65,268 rows. The data frame contains integer, number, and character data types 
-and contains a redacted column that is inaccessible. There are also a total of 
-27 unique dates, each 7 weeks apart (weekly results). 
-
-\newpage
-
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
 str(countydem)
 head(countydem)
 nrow(countydem)
 ncol(countydem)
 typeof(countydem)
 class(countydem)
+
+#The structure of "countydem" reveals a data frame containing 
+#23 columns and 58 rows with integer, character and number data types.
+
 ```
-The structure of "countydem" reveals a data frame containing 
-23 columns and 58 rows with integer, character and number data types.
 
 
-
-```{r, results = "hide" } 
+```{r, echo=F} 
 #Cleaning the data by removing unnecessary columns, rearranging the data,
 #and removing "N/A" data points.
 
@@ -99,8 +97,11 @@ covidvax2[is.na(covidvax2)] <- 0
 #Converting NA cells to 0 we allow ourselves to manipulate and describe entire 
 #numeric columns.
 ```
-```{r, eval=F}
+
+```{r, echo=F, eval=F}
+
 #Descriptions
+
 distinct(covidvax2, county, .keep_all = F)
 distinct(covidvax2, date, .keep_all = F)
 distinct(covidvax2, zip_code, .keep_all = F)
@@ -112,8 +113,14 @@ covidvax2 %>%
   summarise(total_pop_range = range(total_pop_over_12), total_pop_median = median(total_pop_over_12))
 ```
 
-```{r, results = "hide"}
+```{r, echo=F}
 #County Data 
+
+#Using the function str() we see that the selected varibales in 
+#countydem2 are chr, int, int, int, int. All column types should be fine as is 
+#for our study question. Converting NA cells to 0 we allow ourselves to 
+#manipulate and describe entire numeric columns. We also changed column names to 
+#allow for easier/obvious verbiage.
 
 countydem2 <- select(countydem, "name", "renter_occ","owner_occ", 
                      "vacant", "hse_units")
@@ -124,15 +131,7 @@ names(countydem2) <-c("county_name","renters","owners",
 countydem2[is.na(countydem2)] <- 0
 ```
 
-Using the function str() we see that the selected varibales in 
-countydem2 are chr, int, int, int, int. All column types should be fine as is 
-for our study question. Converting NA cells to 0 we allow ourselves to 
-manipulate and describe entire numeric columns. We also changed column names to 
-allow for easier/obvious verbiage.
-
-\newpage
-
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
 
 #Descriptions
 
@@ -142,14 +141,17 @@ distinct(covidvax2, zip_code, .keep_all = F)
 
 ```
 
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
 
 covidvax2 %>% group_by(zip_code) %>% 
   summarise(fullyvax_range = range(fully_vaccinated), partiallyvax_range = range(partially_vaccinated))
 
 ``` 
-Population Range and Median for COVID vaccinations for those over 12 years old.
-```{r, results = "hide"}
+
+```{r, echo=F,eval=F}
+
+#Population Range and Median for COVID vaccinations for those over 12 years old.
+
 covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
                         total_pop_median = median(total_pop_over_12))
 
@@ -161,8 +163,11 @@ covidvax2 %>% summarise(total_pop_range = range(total_pop_over_12),
 #Changed column names to easier/obvious verbiage
 ```
 
-Descriptions
-```{r, results = "hide"}
+
+```{r, echo=F, eval=F}
+
+#Descriptions
+
 distinct(countydem2, county_name, .keep_all = F)
 
 countydem2 %>% summarise(renters_mean = mean(renters),
@@ -174,17 +179,16 @@ countydem2 %>% summarise(renters_range = range(renters),
                          vacant_range = range(vacant_housing), total_range = range(total_housing_units))
 ```
 
-Below, is the minimum, first quartile, median, third quartile, and max values.
+```{r, echo=F, eval=F}
 
-```{r, results = "hide"}
+#Below, is the minimum, first quartile, median, third quartile, and max values.
+
 fivenum(covidvax2$total_pop_over_12)
 fivenum(covidvax2$fully_vaccinated)
 fivenum(covidvax2$partially_vaccinated)
 ```
 
-\newpage 
-
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
 
 #Descriptions
 
@@ -194,7 +198,8 @@ distinct(countydem2, county_name, .keep_all = F)
 
 ``` 
 
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
+
 countydem2 %>%
   summarise(renters_mean = mean(renters), 
             owners_mean = mean(owners), 
@@ -208,29 +213,37 @@ countydem2 %>%
                          total_range = range(total_housing_units))
 
 ```
-Below, we get the five number summary for data of interest in countydem2.
-```{r}
+
+
+```{r, echo=F, eval=F}
+
+#Below, we get the five number summary for data of interest in countydem2.
+
 fivenum(countydem2$renters)
 fivenum(countydem2$owners)
 fivenum(countydem2$vacant_housing)
 fivenum(countydem2$total_housing_units)
 
 ```
-\newpage
 
-# Milestone 3
-
-```{r, results = "hide"}
+```{r, echo=F, eval=F}
 
 #Covid Vaccination by County data manipulation (covidvax files)
 
 unique(covidvax2$county)
 
-covidvax2 <- covidvax2 %>% filter(county!="0")
+
 
 unique(covidvax2$date)
+
+
 ```
-```{r, results = "hide"}
+
+```{r, echo=F}
+covidvax2 <- covidvax2 %>% filter(county!="0")
+```
+
+```{r, echo=F}
 
 covidvax3 <- covidvax2 %>% 
   mutate(month = case_when(
@@ -245,11 +258,15 @@ covidvax3 <- covidvax2 %>%
     str_detect(date, "-09-") == T ~ "September"
   ))
 
+```
+
+```{r,eval=F, echo=F}
+
 unique(covidvax3$month)
 
 ```
 `
-```{r, results = "hide"}
+```{r, echo=F}
 
 covidvax4 <- covidvax3 %>% 
   group_by(county,month)%>%
@@ -262,9 +279,15 @@ covidvax4 <- covidvax4 %>%
   select(-"zip_code",-"total_pop_over_12",-"fully_vaccinated",
          -"partially_vaccinated")
 
+```
+
+```{r,echo=F, eval=F}
 #Ensuring we get the last date for each month's final total vaccinations
 
 unique(covidvax4$date)
+```
+
+```{r, echo=F}
 
 covidvax4 <- covidvax4 %>% filter(date == "2021-01-26"| date == "2021-02-23" |
                                     date == "2021-03-30" |
@@ -277,30 +300,39 @@ covidvax4 <- covidvax4 %>% filter(date == "2021-01-26"| date == "2021-02-23" |
 
 ```
 
-```{r, results = "hide"}
+```{r, echo=F}
 
 #Removing duplicate columns after combining the zip codes for each county
 #and making column totals for each . Then we check to ensure we have 58 counties
 #for each month.
 
 covidvax5 <- covidvax4 %>% distinct(county,month, .keep_all=T)
+```
+
+```{r, eval=F, echo=F}
 
 covidvax5 %>% group_by(month) %>% summarise(n())
 ```
-```{r, results = "hide"}
+
+```{r, echo=F}
 covidvax5 <- covidvax5 %>%
 mutate(county_percent_fullvax =
 (county_fully_vaccinated)/(county_total_pop_over12)) %>%
 mutate(county_percent_partialvax =
 (county_partially_vaccinated)/(county_total_pop_over12))
+```
 
+```{r, eval=F, echo=F}
 #Checking that our percentages make sense.
 summary(covidvax5$county_percent_fullvax)
 summary(covidvax5$county_percent_partialvax)
 
 ```
-County Demographic Data Editing
-```{r, results = "hide"}
+
+```{r, echo=F}
+
+#County Demographic Data Editing
+
 
 countydem3 <- countydem2 %>%
   mutate(total_in_use_housing = total_housing_units - vacant_housing) %>%
@@ -308,123 +340,126 @@ countydem3 <- countydem2 %>%
   mutate(owner_housing_prop = (owners/(total_in_use_housing))) %>%
   mutate(renter_owner_ratio = renters/owners)
 ```
-\newpage
 
+
+```{r, eval = F, echo=F}
 #Data Dictionary
-
-```{r, results = "hide"}
 
 str(countydem3)
 str(covidvax5)
 
 ```
 
-#County Demographics Data Set
+```{r,eval=F,echo=F}
+##County Demographics Data Set
 
-Name: county_name
-Data type: character
-Description: A list of all 58 counties in California.
+#Name: county_name
+#Data type: character
+#Description: A list of all 58 counties in California.
 
-Name:renters
-Data type: integer
-Description: Number of renters in each county in California.
+#Name:renters
+#Data type: integer
+#Description: Number of renters in each county in California.
 
-Name:owners
-Data type: integer
-Description: Number of owners in each county in California.
+#Name:owners
+#Data type: integer
+#Description: Number of owners in each county in California.
 
-Name:vacant_housing
-Data type: integer
-Description: Number of empty homes in each county in California.
+#Name:vacant_housing
+#Data type: integer
+#Description: Number of empty homes in each county in California.
 
-Name:total_housing_units
-Data type: integer
-Description: Number of total homes in each county in California.
+#Name:total_housing_units
+#Data type: integer
+#Description: Number of total homes in each county in California.
 
-Name:total_in_use_housing
-Data type: integer
-Description: Number of total homes currently in use in each county in 
-California.
+#Name:total_in_use_housing
+#Data type: integer
+#Description: Number of total homes currently in use in each county in 
+#California.
 
-Name:renter_housing_prop
-Data type: number
-Description: Proportion of renters living in occupied homes in 
-each county in California.
+#Name:renter_housing_prop
+#Data type: number
+#Description: Proportion of renters living in occupied homes in 
+#each county in California.
 
-Name:owner_housing_prop
-Data type: number
-Description: Proportion of home owners living in occupied homes in 
-each county in California.
+#Name:owner_housing_prop
+#Data type: number
+#Description: Proportion of home owners living in occupied homes in 
+#each county in California.
 
-Name:renter_owner_ratio
-Data type: number
-Description: Renter to Home owner ratio for 
-each county in California.
+#Name:renter_owner_ratio
+#Data type: number
+#Description: Renter to Home owner ratio for 
+#each county in California.
 
-\newpage
 
-#Covid Vaccination Rate Data Set
+##Covid Vaccination Rate Data Set
 
-Name:county
-Data type: character
-Description: A list containing the 58 counties in California.
+#Name:county
+#Data type: character
+#Description: A list containing the 58 counties in California.
 
-Name:date
-Data type: character
-Description:The dates when the data was compiled, ranging from January 5, 2021 to
-September 14, 2021.
+#Name:date
+#Data type: character
+#Description:The dates when the data was compiled, ranging from January 5, 2021 to
+#September 14, 2021.
 
-Name:month
-Data type: character
-Description: The month in which the testing took place. Created to more easily
-combine data from specific dates into monthly variables for each county 
-in the future.
+#Name:month
+#Data type: character
+#Description: The month in which the testing took place. Created to more easily
+#combine data from specific dates into monthly variables for each county 
+#in the future.
 
-Name:county_total_pop_over12
-Data type: number
-Description: Total population over the age of 12 years old in 
-each county in California for a specific month.
+#Name:county_total_pop_over12
+#Data type: number
+#Description: Total population over the age of 12 years old in 
+#each county in California for a specific month.
 
-Name:county_fully_vaccinated
-Data type: number
-Description: Total number of people fully vaccinated over the age of 12 in 
-each county in California for a specific month.
+#Name:county_fully_vaccinated
+#Data type: number
+#Description: Total number of people fully vaccinated over the age of 12 in 
+#each county in California for a specific month.
 
-Name:county_fully_vaccinated
-Data type: number
-Description: Total number of people fully vaccinated over the age of 12 in 
-each county in California for a specific month.
+#Name:county_fully_vaccinated
+#Data type: number
+#Description: Total number of people fully vaccinated over the age of 12 in 
+#each county in California for a specific month.
 
-Name:county_partially_vaccinated
-Data type: number
-Description: Total number of people partially vaccinated over the age of 12 in 
-each county in California for a specific month.
+#Name:county_partially_vaccinated
+#Data type: number
+#Description: Total number of people partially vaccinated over the age of 12 in 
+#each county in California for a specific month.
 
-Name:county_percent_fullvax
-Data type: number
-Description: Percentage of people fully vaccinated over the age of 12 over the
-total population over 12 years old in each county in California for a specific
-month.
+#Name:county_percent_fullvax
+#Data type: number
+#Description: Percentage of people fully vaccinated over the age of 12 over the
+#total population over 12 years old in each county in California for a specific
+#month.
 
-Name:county_percent_partialvax
-Data type: number
-Description: Percentage of people partially vaccinated over the age of 12 over the
-total population over 12 years old in each county in California for a specific
-month.
+#Name:county_percent_partialvax
+#Data type: number
+#Description: Percentage of people partially vaccinated over the age of 12 over the
+#total population over 12 years old in each county in California for a specific
+#month.
 
-\newpage
+```
 
-Descriptive Statistics Tables
-```{r}
+
+```{r,echo=F}
+
+#Descriptive Statistics Tables
+
 descstatsdem <- countydem3 %>%
   summarise(total_in_use_housing_range = summary(total_in_use_housing),
             renter_housing_ratio_range = summary(renter_housing_prop),
             owner_housing_ratio_range = summary(owner_housing_prop),
             renter_owner_ratio_range = summary(renter_owner_ratio)) 
-rownames(descstatsdem) <- c("Min", "1st Quartile", "Median", "Mean", "3rd Quartile", "Max")
+rownames(descstatsdem) <- c("Min", "1st Quartile", "Median", "Mean", 
+                            "3rd Quartile", "Max")
 ```
 
-```{r}
+```{r,echo=F}
 descstatsdem2 <- countydem3 %>%
   summarise(total_renters = sum(renters),
             total_owners = sum(owners))
@@ -433,23 +468,34 @@ rownames(descstatsdem2) <- c("Total Count")
 ```
 
 
-```{r}
-library(kableExtra)
+```{r, echo=F}
+
 countydem_kable <- kable(descstatsdem,longtable=T,booktabs=T, 
                          col.names = c("Total in Use Housing", "Renter/Housing Ratio", 
                                        "Owner/Housing Ratio", "Renter/Owner Ratio"), 
                          caption = "Summary of CA Housing Across All Counties in 2021")
 countydem_kable
+
+```
+Table 1 provides a statistical breakdown of the total in-use housing to
+total housing,  renter to in-use housing ratio,  owner to in-use housing ratio,
+and the renter to owner ratio for the counties in California.
+
+
+```{r, echo=F}
 countydem_kable2 <-kable(descstatsdem2,longtable=T,booktabs=T, 
                          col.names = c("Renters", "Owners"), 
                          caption = "Total Number of Renters and Owners in CA in 2021")
 countydem_kable2
-#does not make sense to visualize covidvax dataset in a kable, will update visualization 
-#with graph using ggplot in milestone 4
+
 ```
+Table 2 provides the total renter and owner households in all of California 
+in 2021. There are more owner households than renter households.
+
+
 \newpage
 
-# Milestone 4
+
 
 ```{r, echo=F} 
 #Creating a combined data set.
@@ -501,18 +547,18 @@ combined_kable <- kable(combined2,longtable=T,booktabs=T,
            )
 ```
 \newpage
-```{r}
+```{r, echo=F}
 combined_kable
 ```
 
-This table generated via the kable package shows the vaccination rate at the end
+Table 3: This table shows the vaccination rate at the end
 of each month for the time period provided in the dataset
 for the top 5 and bottom 5 renter-to-owner ratios and their counties. 
 The table is in descending order of the ratios and as a visual guide, we have 
 color coded specific rows to help split the top 5 from the bottom 5 counties and
 all of their corresponding data. 
 
-```{r, fig.height=10, echo=F}
+```{r, fig.height=8, echo=F}
 
 countydem4 <- countydem3 %>% arrange(desc(renter_owner_ratio))
 
@@ -539,7 +585,9 @@ countydemcombined %>% ggplot(aes(y= county_name, x=renter_owner_ratio)) +
   theme(plot.title = element_text(hjust = 0.5)) 
 
 ```
-
+Figure 1: This graph displays the Renter-to-Owner Ratio for every single county
+in California. Highlighted in red are the top 5 and bottom 5 ratios. We will use
+their corresponding counties' data for further analysis.
 ```{r, echo=F}
 
 #Using our "combined" data set, we identify the top 5 and bottom 5 renter to 
@@ -582,7 +630,7 @@ countydem4subset %>% ggplot(aes(y= county_name, x=renter_owner_ratio)) +
   theme_linedraw()
 
 ```
-This graph provides a greater visual aid for the disparity of owning a home
+Figure 2: This graph provides a greater visual aid for the disparity of owning a home
 and the amount of renters for the top 5 and bottom 5 counties. 
 As we would expect, we see a very drastic divide between Sierra county and 
 Yolo county.
@@ -636,7 +684,7 @@ ggplot(data = covidvax6top5, aes(x=month, y=county_percent_fullvax,
        color="County") +
  theme(axis.text.x = element_text(angle = 30, hjust =1))
 ```
-This graph shows the vaccination rates for the top 5 renter-to-owner
+Figure 3: This graph shows the vaccination rates for the top 5 renter-to-owner
 ratio counties in California over January to September. 
 San Francisco consistently had the highest percentage of fully vaccinated
 individuals starting in March and reached an astonishing 80% coverage of its 
@@ -666,7 +714,7 @@ ggplot(data = covidvax6bottom5, aes(x=month, y=county_percent_fullvax,
        color="County") +
   theme(axis.text.x = element_text(angle = 30, hjust =1))
 ```
-This graph shows the vaccination rates for the bottom 5 renter-to-owner
+Figure 4: This graph shows the vaccination rates for the bottom 5 renter-to-owner
 ratio counties over January to September. The Sierra line looks very strange,
 as we lose coverage. This could potentially be due to low population density and
 movement out of the county perhaps. We can only speculate with the given data.
@@ -735,4 +783,9 @@ ggplot(data = covidvaxcombined, aes(x=month, y=county_percent_fullvax,
   scale_y_continuous(breaks=seq(0,1,0.05)) +
   theme(axis.text.x = element_text(angle = 30, hjust =1))
 ```
-
+Figure 5: This graph combines the data from Figure 3 and Figure 4 for an easier
+comparison of vaccination rates over time for each of the top and bottom 5 
+counties. We see that overall, those counties with the highest renter-to-owner 
+ratios also had the highest vaccination rates for the January-September time
+period compared to the bottom five renter-to-owner ratio counties. We start to
+see a divide between the groups after April.
