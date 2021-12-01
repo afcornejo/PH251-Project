@@ -4,19 +4,25 @@ author: "Adrian Cornejo and Victor Guillera"
 date: "11/30/2021"
 output: pdf_document
 ---
+## Problem Statement 
 
-These data sets relate to our question if being a homeowner status and 
-available housing impacts vaccination rates per CA county. While not a perfect 
-representation of SES of cases, this data set will help us elucidate if there is
-a relationship between the homeowner-related to renter rates and
-the vaccination rate per county.
+The goal of our study is to observe the impact between renter versus homeowner status (housing tenure) on COVID-19 vaccination rates per CA county as an indicator of SES. There are multiple factors behind housing tenure that may affect the overall status of SES and subsequent vaccination rates such as the number of individuals occupying a residency, mortgage status, household income, or generational wealth, and other demographic information. While renter and homeowner rates are not a perfect representation of SES, this comparison will help us elucidate if the financial status is a potential barrier to vaccination and an adequate indicator of SES per our given datasets. 
 
-We have two data sets, one is of COVID-19 vaccination progress throughout 
-CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 
-to about present 9/14/21, and the other is demographic info in CA across 
-all counties from the US census data for 2014 to 2019.
-Below, we read in our libraries, data sets, explore our data sets, 
-and then proceed to clean the data sets.
+We calculated the renter-to-homeowner ratio of every county in CA and compared the top 5 ratios to the bottom 5 ratios, tracking vaccine progress by percentage of fully vaccinated individuals over the age of 12 from January 2021 through September 2021. Two different datasets were used, one is of COVID-19 vaccination progress throughout CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 to 9/14/21, and the other is demographic information in CA across all counties from the US census data for 2014 to 2019. 
+
+
+
+
+## Methods 
+
+
+### Data Sources - Years/Dates of Data:
+
+COVID-19 Vaccination Status Dataset: This dataset supplied by the CDPH tracked the total number of persons partially and fully vaccinated with a COVID-19 vaccine over the age of 12 by CA county and zip code. The dataset contained weekly totals starting on January 5th, 2021 and ended on September 14th, 2021. 
+
+CA County Demographics Dataset: This dataset contained demographic information of every county in CA from 2021 census data. Variables included: population, population density, race/ethnicity, gender, median age, households, families, housing units, average family size, vacant homes, and renter and owner occupancies. 
+
+### Data Cleaning/Methods Used:
 
 \newpage
 
@@ -467,6 +473,7 @@ rownames(descstatsdem2) <- c("Total Count")
 
 ```
 
+## Results
 
 ```{r, echo=F}
 
@@ -479,7 +486,7 @@ countydem_kable
 ```
 Table 1 provides a statistical breakdown of the total in-use housing to
 total housing,  renter to in-use housing ratio,  owner to in-use housing ratio,
-and the renter to owner ratio for the counties in California.
+and the renter to owner ratio for the counties in California in 2021.
 
 
 ```{r, echo=F}
@@ -490,7 +497,7 @@ countydem_kable2
 
 ```
 Table 2 provides the total renter and owner households in all of California 
-in 2021. There are more owner households than renter households.
+in 2021. There are more owner households than renter households overall.
 
 
 \newpage
@@ -505,6 +512,41 @@ countydem3$county_name <- toupper(countydem3$county_name)
 
 combined <- right_join(countydem3, covidvax5, by=c("county_name" = "county"))
 ```
+
+\newpage 
+```{r, fig.height=8, echo=F}
+
+countydem4 <- countydem3 %>% arrange(desc(renter_owner_ratio))
+
+countydemcombined <- countydem4
+
+countydem4subset <- countydem4 %>% slice(1:5, 54:58)
+
+
+countydemcombined$county_name <- reorder(countydemcombined$county_name,
+                                         countydemcombined$renter_owner_ratio)
+
+
+countydemcombined %>% ggplot(aes(y= county_name, x=renter_owner_ratio)) + 
+  geom_point() + 
+  geom_point(data=countydem4subset, 
+             aes(x=renter_owner_ratio,y=county_name), 
+             color='red',
+             size=3) +
+  labs(x = "Renter to Owner Ratio", 
+       title= "Renter-to-Owner Ratios in CA: All California Counties ",
+       y ="California County", fill ="Rank", 
+       color="County Status") + 
+  scale_x_continuous(breaks=seq(0,2,0.10)) +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+```
+Figure 1: This graph displays the Renter-to-Owner Ratio for every single county
+in California. Highlighted in red are the top 5 and bottom 5 ratios. We will use
+their corresponding counties' data for further analysis.
+
+\newpage
+
 
 ```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60), echo=F}
 
@@ -553,41 +595,10 @@ combined_kable
 
 Table 3: This table shows the vaccination rate at the end
 of each month for the time period provided in the dataset
-for the top 5 and bottom 5 renter-to-owner ratios and their counties. 
-The table is in descending order of the ratios and as a visual guide, we have 
-color coded specific rows to help split the top 5 from the bottom 5 counties and
-all of their corresponding data. 
-
-```{r, fig.height=8, echo=F}
-
-countydem4 <- countydem3 %>% arrange(desc(renter_owner_ratio))
-
-countydemcombined <- countydem4
-
-countydem4subset <- countydem4 %>% slice(1:5, 54:58)
+for the top 5 and bottom 5 renter-to-owner ratios and their counties.
 
 
-countydemcombined$county_name <- reorder(countydemcombined$county_name,
-                                         countydemcombined$renter_owner_ratio)
 
-
-countydemcombined %>% ggplot(aes(y= county_name, x=renter_owner_ratio)) + 
-  geom_point() + 
-  geom_point(data=countydem4subset, 
-             aes(x=renter_owner_ratio,y=county_name), 
-             color='red',
-             size=3) +
-  labs(x = "Renter to Owner Ratio", 
-       title= "Renter-to-Owner Ratios in CA: All California Counties ",
-       y ="California County", fill ="Rank", 
-       color="County Status") + 
-  scale_x_continuous(breaks=seq(0,2,0.10)) +
-  theme(plot.title = element_text(hjust = 0.5)) 
-
-```
-Figure 1: This graph displays the Renter-to-Owner Ratio for every single county
-in California. Highlighted in red are the top 5 and bottom 5 ratios. We will use
-their corresponding counties' data for further analysis.
 ```{r, echo=F}
 
 #Using our "combined" data set, we identify the top 5 and bottom 5 renter to 
@@ -630,10 +641,9 @@ countydem4subset %>% ggplot(aes(y= county_name, x=renter_owner_ratio)) +
   theme_linedraw()
 
 ```
-Figure 2: This graph provides a greater visual aid for the disparity of owning a home
-and the amount of renters for the top 5 and bottom 5 counties. 
-As we would expect, we see a very drastic divide between Sierra county and 
-Yolo county.
+Figure 2: This graph provides a greater visual aid for the disparity of owning
+a home and the amount of renters for the top 5 and bottom 5 counties. 
+
 
 
 \newpage
@@ -785,7 +795,28 @@ ggplot(data = covidvaxcombined, aes(x=month, y=county_percent_fullvax,
 ```
 Figure 5: This graph combines the data from Figure 3 and Figure 4 for an easier
 comparison of vaccination rates over time for each of the top and bottom 5 
-counties. We see that overall, those counties with the highest renter-to-owner 
-ratios also had the highest vaccination rates for the January-September time
-period compared to the bottom five renter-to-owner ratio counties. We start to
-see a divide between the groups after April.
+counties. 
+\newpage
+
+## Discussion
+
+We see in the figures above, that overall, those counties with the highest renter-to-
+owner ratios also had the highest vaccination rates for the January-September 
+time period compared to the bottom five renter-to-owner ratio counties. We start to
+see a divide between the groups after April during the initial vaccine rollout. 
+As the data shows, it appears as if being in a county with more home owners is 
+more associated with being unvaccinated. 
+
+This goes against our hypothesis that homeowner/renter rates would be a 
+good predictor for SES and therefore higher vaccination rates. Owning versus
+renting a home involves many SES factors in and of itself, so we can see how
+confounding can easily skew our results in this case. Renting in big cities like
+Los Angeles and San Francisco can be very expensive, and it can be interpreted 
+as showing high SES in some cases for certain counties. It is also important to note the 
+political divide in the country and its impact on vaccinations. Bigger cities
+like Los Angeles and San Francisco tend to be liberal and more pro vaccine
+compared to more conservative rural counties (like the bottom 5, which are all in the Sierra 
+Nevada region).
+
+
+
