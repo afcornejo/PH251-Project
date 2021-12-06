@@ -8,7 +8,7 @@ output: pdf_document
 
 The goal of our study is to observe the impact between renter versus homeowner status (housing tenure) on COVID-19 vaccination rates per CA county as an indicator of SES. There are multiple factors behind housing tenure that may affect the overall status of SES and subsequent vaccination rates such as the number of individuals occupying a residency, mortgage status, household income, or generational wealth, and other demographic information. While renter and homeowner rates are not a perfect representation of SES, this comparison will help us elucidate if the financial status is a potential barrier to vaccination and an adequate indicator of SES per our given datasets. 
 
-We calculated the renter-to-homeowner ratio of every county in CA and compared the top 5 ratios to the bottom 5 ratios, tracking vaccine progress by percentage of fully vaccinated individuals over the age of 12 from January 2021 through September 2021. Two different datasets were used, one is of COVID-19 vaccination progress throughout CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 to 9/14/21, and the other is demographic information in CA across all counties from the US census data for 2014 to 2019. 
+We calculated the renter-to-homeowner ratio of every county in CA and compared the top 5 ratios to the bottom 5 ratios, tracking vaccine progress by percentage of fully vaccinated individuals over the age of 12 from January 2021 through September 2021. Two different datasets were used, one is of COVID-19 vaccination progress throughout CA provided by the CDPH following vaccine dosage by zip code from 1/5/21 to 9/14/21, and the other is demographic information in CA across all counties from the US census data for 2012. 
 
 
 
@@ -19,7 +19,7 @@ We calculated the renter-to-homeowner ratio of every county in CA and compared t
 
 COVID-19 Vaccination Status Dataset: This dataset supplied by the CDPH tracked the total number of persons partially and fully vaccinated with a COVID-19 vaccine over the age of 12 by CA county and zip code. The dataset contained weekly totals starting on January 5th, 2021 and ended on September 14th, 2021. 
 
-CA County Demographics Dataset: This dataset contained demographic information of every county in CA from 2021 census data. Variables included: population, population density, race/ethnicity, gender, median age, households, families, housing units, average family size, vacant homes, and renter and owner occupancies. 
+CA County Demographics Dataset: This dataset contained demographic information of every county in CA from 2012 census data. Variables included: population, population density, race/ethnicity, gender, median age, households, families, housing units, average family size, vacant homes, and renter and owner occupancies. 
 
 ### Data Cleaning/Methods Used:
 
@@ -508,24 +508,24 @@ rownames(descstatsdem2) <- c("Total Count")
 countydem_kable <- kable(descstatsdem,longtable=T,booktabs=T, 
                          col.names = c("Total in Use Housing", "Renter/Housing Ratio", 
                                        "Owner/Housing Ratio", "Renter/Owner Ratio"), 
-                         caption = "Summary of CA Housing Across All Counties in 2021")
+                         caption = "Summary of CA Housing Across All Counties in 2012")
 countydem_kable
 
 ```
 Table 1 provides a statistical breakdown of the total in-use housing to
 total housing,  renter to in-use housing ratio,  owner to in-use housing ratio,
-and the renter to owner ratio for the counties in California in 2021.
+and the renter to owner ratio for the counties in California in 2012.
 
 
 ```{r, echo=F}
 countydem_kable2 <-kable(descstatsdem2,longtable=T,booktabs=T, 
                          col.names = c("Renters", "Owners"), 
-                         caption = "Total Number of Renters and Owners in CA in 2021")
+                         caption = "Total Number of Renters and Owners in CA in 2012")
 countydem_kable2
 
 ```
 Table 2 provides the total renter and owner households in all of California 
-in 2021. There are more owner households than renter households overall.
+in 2012. There are more owner households than renter households overall.
 
 
 \newpage
