@@ -15,8 +15,37 @@ We calculated the renter-to-homeowner ratio of every county in CA and compared t
 
 ## Methods 
 
-
 ### Data Sources - Years/Dates of Data:
+
+COVID-19 Vaccination Status Dataset: This dataset supplied by the CDPH tracked the total number of persons partially and fully vaccinated with a COVID-19 vaccine over the age of 12 by CA county and zip code. The dataset contained weekly totals starting on January 5th, 2021 and ended on September 14th, 2021. 
+
+CA County Demographics Dataset: This dataset contained demographic information of every county in CA from 2021 census data. Variables included: population, population density, race/ethnicity, gender, median age, households, families, housing units, average family size, vacant homes, and renter and owner occupancies. 
+
+### Data Cleaning/Methods Used:
+
+COVID-19 Vaccination Status Dataset: We observed the overall dataset and variable types using the str() function and then select() to keep our variables of interest. Using the names() function we renamed variable columns to names more suitable for our team, from there we converted ‘NA’ variables to values of 0 with is is.na() function as a string subset. Any duplicates for rows were removed using distinct(). We filtered out values in the county column that were equal to zero by filter(county != “0”). All dates were input as.date, but we wanted to visualize multiple dates in each month as their name (i.e. Jan., Feb., etc.), using mutate() and a case_when() function with the help of str_detect() we converted each month taking rows containing the numeric value of the month to equal their respective month name. 
+
+CA County Demographics Dataset: We observed the overall dataset and variable types using the str() function and then select() to keep our variables of interest. Using the names() function we renamed variable columns to names more suitable for our team, from there we converted ‘NA’ variables to values of 0 with is is.na() function as a string subset. Any duplicates for rows were removed using distinct(). 
+
+### New Variable Calculations:
+
+COVID-19 Vaccination Status Dataset: We summarized monthly vaccination data per month using group_by(county, month) and mutate() with sum() to add the variables county_total_pop_over12, county_fully_vaccinated, county_partially_vaccinated. Lastly, using filter() we kept the last date of each month to use for the cumulative measurement and visuzaliation in our graphs.  
+
+CA County Demographics Dataset: Four variables were created using the mutate() function; 
+total_in_use_housing = total_housing_units - vacant_housing,
+renter_housing_prop = (renters/(total_in_use_housing)),
+owner_housing_prop = (owners/(total_in_use_housing)),
+renter_owner_ratio = renters/owners
+
+### Decisions Team Made About the Data: 
+
+We decided the best way to easily visualize our data to interpret in the scope of our problem statement was to compare the renter-to-owner ratios of the top five counties with the bottom five counties. The two datasets of COVID-19 vaccinations and demographics were combined using right_join() and then using select() we kept our desired variables. Using pivot_wider(), arrange(), and mutate_if(), we arranged our data in an ideal way to view in a table with kable(). 
+
+### Additional Wrangling Done for Visuals: 
+
+Originally, we split up the top five and bottom five counties to visualize in separate ggplot point graphs, but made the decision to combine the two to visualize and compare together.  
+
+
 
 COVID-19 Vaccination Status Dataset: This dataset supplied by the CDPH tracked the total number of persons partially and fully vaccinated with a COVID-19 vaccine over the age of 12 by CA county and zip code. The dataset contained weekly totals starting on January 5th, 2021 and ended on September 14th, 2021. 
 
