@@ -847,7 +847,7 @@ compared to more conservative rural counties (like the bottom 5, which are all i
 Nevada region).
 
 
-```{r, echo=F} 
+```{r, eval=F, echo=F} 
 #Figuring out what happened to Sierra
 
 covidvaxsierra <- covidvax2 %>% filter(county=="SIERRA")
@@ -899,7 +899,7 @@ sierrazip95844 <- covidvaxsierra2 %>% filter(zip_code=="95944")
 
 ```
 
-```{r, echo=F}
+```{r, eval=F, echo=F}
 
 
 ggplot(sierrazip96125, aes(x=date, y=county_fully_vaccinated)) + geom_point()
@@ -922,7 +922,7 @@ ggplot(sierrazip96125, aes(x=date, y=county_fully_vaccinated)) + geom_point()
 ```
 
 
-```{r,echo=F}
+```{r, eval=F, echo=F}
 rm(covidvaxamador)
 #For comparison of data, lets check another small county in the Sierras.
 #Lets try Nevada.
@@ -934,7 +934,7 @@ distinct(covidvaxamador, zip_code)
 
 ```
 
-```{r,echo=F}
+```{r, eval=F, echo=F}
 
 covidvaxamador2 <- covidvaxamador %>% 
   mutate(month = case_when(
