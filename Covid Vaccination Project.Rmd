@@ -51,7 +51,6 @@ COVID-19 Vaccination Status Dataset: This dataset supplied by the CDPH tracked t
 
 CA County Demographics Dataset: This dataset contained demographic information of every county in CA from 2021 census data. Variables included: population, population density, race/ethnicity, gender, median age, households, families, housing units, average family size, vacant homes, and renter and owner occupancies. 
 
-### Data Cleaning/Methods Used:
 
 \newpage
 
