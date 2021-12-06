@@ -819,7 +819,7 @@ compared to more conservative rural counties (like the bottom 5, which are all i
 Nevada region).
 
 
-```{r} 
+```{r, echo=F} 
 #Figuring out what happened to Sierra
 
 covidvaxsierra <- covidvax2 %>% filter(county=="SIERRA")
@@ -871,7 +871,7 @@ sierrazip95844 <- covidvaxsierra2 %>% filter(zip_code=="95944")
 
 ```
 
-```{r}
+```{r, echo=F}
 
 
 ggplot(sierrazip96125, aes(x=date, y=county_fully_vaccinated)) + geom_point()
@@ -894,7 +894,7 @@ ggplot(sierrazip96125, aes(x=date, y=county_fully_vaccinated)) + geom_point()
 ```
 
 
-```{r}
+```{r,echo=F}
 rm(covidvaxamador)
 #For comparison of data, lets check another small county in the Sierras.
 #Lets try Nevada.
@@ -906,7 +906,7 @@ distinct(covidvaxamador, zip_code)
 
 ```
 
-```{r}
+```{r,echo=F}
 
 covidvaxamador2 <- covidvaxamador %>% 
   mutate(month = case_when(
@@ -957,11 +957,9 @@ amadorzip95629 <- covidvaxamador2 %>% filter(zip_code=="95629")
 amadorzip95642 <- covidvaxamador2 %>% filter(zip_code=="95642")
 
 amadorzip95685 <- covidvaxamador2 %>% filter(zip_code=="95685")
-```
 
-Overall, the rates for Amador's each zip codes varies a bit in terms of total counts and saw dips, but their percentages always increased and were cumulative. The percentages for Sierra still saw major disruptions in some zip codes. Its important to note that Amador did see percentages over 100%, so the way in which data was collected is a mystery to us and how and why a county's over 12 population would fluctuate so wildly is unknown to us. This is beyond our control. So we attempt to aggregate the total zip codes by the end of each month to get a cumulative result for each county to look at the data this way. One possibility is that counties that were filtered out for having "NA" were mostly Sierra counties or data that had zeros was intially N/A, so unknown due to lack of reporting so perhaps there were numbers there but our data processing method of changing all N/A to zero eliminated that. Sierra is very remote and the smallest county in California, so this is very possible as well.
 
-```{r}
+#Overall, the rates for Amador's each zip codes varies a bit in terms of total counts and saw #dips, but their percentages always increased and were cumulative. The percentages for Sierra #still saw major disruptions in some zip codes. Its important to note that Amador did see #percentages over 100%, so the way in which data was collected is a mystery to us and how and #why a county's over 12 population would fluctuate so wildly is unknown to us. This is beyond #our control. So we attempt to aggregate the total zip codes by the end of each month to get a #cumulative result for each county to look at the data this way. One possibility is that #counties that were filtered out for having "NA" were mostly Sierra counties or data that had #zeros was intially N/A, so unknown due to lack of reporting so perhaps there were numbers there #but our data processing method of changing all N/A to zero eliminated that. Sierra is very #remote and the smallest county in California, so this is very possible as well.
 
 sum(is.na(covidvax$county)) 
 
