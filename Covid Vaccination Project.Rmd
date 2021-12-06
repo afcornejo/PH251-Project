@@ -665,8 +665,7 @@ countydem4subset %>% ggplot(aes(y= county_name, x=renter_owner_ratio)) +
        title= "Renter-to-Owner Ratios in CA: Top 5 and Bottom 5 Counties ",
        y ="California County", fill ="Rank", 
        color="County Status") + 
-  scale_x_continuous(breaks=seq(0,2,0.10)) +
-  theme_linedraw()
+  scale_x_continuous(breaks=seq(0,2,0.10)) 
 
 ```
 Figure 2: This graph provides a greater visual aid for the disparity of owning
@@ -845,6 +844,8 @@ political divide in the country and its impact on vaccinations. Bigger cities
 like Los Angeles and San Francisco tend to be liberal and more pro vaccine
 compared to more conservative rural counties (like the bottom 5, which are all in the Sierra 
 Nevada region).
+
+The Sierra county data looks very strange and there appears to be a loss of coverage for fully vaccinated people. This may be an artifact of data processing; there were many N/A vaccination values that were converted to zero for the sake of doing calculations. N/A values may actually be real numerical values but we cannot know for sure. Sierra is the smallest county and one of the least populated in CA, so it would make sense that a lot of the data would be N/A. 
 
 
 ```{r, eval=F, echo=F} 
